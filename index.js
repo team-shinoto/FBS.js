@@ -2,7 +2,9 @@ const { Client, Intents } = require("discord.js");
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.MESSAGE_CONTENT] });
 require("dotenv").config();
 
-if (process.env.DISCORD_BOT_TOKEN == undefined) {
+const token = process.env.token;
+
+if (token == undefined) {
     console.error("TOKENが設定されていません。");
     process.exit(0);
 }
@@ -18,4 +20,4 @@ client.on("interactionCreate", async (interaction) => {
     }
 });
 
-client.login(process.env.DISCORD_BOT_TOKEN);
+client.login(token);
