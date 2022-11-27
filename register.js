@@ -33,7 +33,55 @@ const hello = {
         },
     ],
 };
-const commands = [ping, hello, valorant];
+
+const create_category = {
+    name: "createcategory",
+    description: "カテゴリを作成します。",
+    options: [
+        {
+            type: "STRING",
+            name: "schoolYear",
+            description: "学年を指定します",
+            required: true,
+            choices: [
+                {
+                    name: "1年生",
+                    value: "1",
+                },
+                {
+                    name: "2年生",
+                    value: "2",
+                },
+                {
+                    name: "3年生",
+                    value: "3",
+                },
+                {
+                    name: "4年生",
+                    value: "4",
+                },
+            ],
+        },
+        {
+            type: "STRING",
+            name: "term",
+            description: "学期を指定します",
+            required: true,
+            choices: [
+                {
+                    name: "前期",
+                    value: "1",
+                },
+                {
+                    name: "後期",
+                    value: "2",
+                },
+            ],
+        },
+    ],
+}
+
+const commands = [ping, hello, create_category];
 const client = new Client({
     intents: 0,
 });

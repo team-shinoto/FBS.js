@@ -28,6 +28,20 @@ const commands = {
         return interaction.reply(source[lang.value](name));
     },
 
+    async create_category(interaction) {
+        try {
+            const schoolYear = interaction.options.get("schoolYear");
+            const term = interaction.options.get("term");
+            const name = `${schoolYear.value}年${term.value}学期`;
+            await interaction.guild.channels.create(name, {
+                type: "GUILD_CATEGORY",
+            });
+            return interaction.reply(`カテゴリ ${name} を作成しました。`);
+        } catch (err) {
+            console.error(err);
+            return interaction.reply("エラーが発生しました。");
+        }
+    },
 };
 
 async function onInteraction(interaction) {
