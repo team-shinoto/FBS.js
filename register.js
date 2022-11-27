@@ -11,11 +11,6 @@ const ping = {
     description: "pong!",
 };
 
-const valorant = {
-    name: "valorant",
-    description: "valorant info",
-};
-
 const hello = {
     name: "hello",
     description: "botがあなたに挨拶します。",

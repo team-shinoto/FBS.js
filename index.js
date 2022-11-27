@@ -28,10 +28,6 @@ const commands = {
         return interaction.reply(source[lang.value](name));
     },
 
-    async valorant(interaction) {
-        const msg = "神ゲー！";
-        return interaction.reply(msg);
-    }
 };
 
 async function onInteraction(interaction) {
