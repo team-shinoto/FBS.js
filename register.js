@@ -34,8 +34,8 @@ const hello = {
     ],
 };
 
-const creareCategory = {
-    name: "createcategory",
+const create_category = {
+    name: "create_category",
     description: "カテゴリを作成します。",
     options: [
         {
@@ -81,7 +81,7 @@ const creareCategory = {
     ],
 };
 
-const commands = [ping, hello, creareCategory];
+const commands = [ping, hello, create_category];
 const client = new Client({
     intents: 0,
 });
