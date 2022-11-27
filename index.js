@@ -2,11 +2,7 @@ const Discord = require("discord.js");
 require('dotenv').config();
 
 const commands = {
-    /**
-     *
-     * @param {Discord.CommandInteraction} interaction
-     * @returns
-     */
+
     async ping(interaction) {
         const now = Date.now();
         const msg = ["pong!", "", `gateway: ${interaction.client.ws.ping}ms`];
@@ -16,11 +12,7 @@ const commands = {
         );
         return;
     },
-    /**
-     *
-     * @param {Discord.CommandInteraction} interaction
-     * @returns
-     */
+
     async hello(interaction) {
         const source = {
             en(name) {

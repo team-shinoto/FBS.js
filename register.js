@@ -1,11 +1,5 @@
 const {Client, ClientApplication} = require("discord.js");
-/**
- * 
- * @param {Client} client 
- * @param {import("discord.js").ApplicationCommandData[]} commands 
- * @param {import("discord.js").Snowflake} guildID 
- * @returns {Promise<import("@discordjs/collection").Collection<string,import("discord.js").ApplicationCommand>>}
- */
+
 async function register(client, commands, guildID) {
     if (guildID == null) {
         return client.application.commands.set(commands);
@@ -34,15 +28,15 @@ const hello = {
             choices: [
                 {
                     name: "English",
-                    value: "en"
+                    value: "en",
                 },
                 {
                     name: "Japanese",
-                    value: "ja"
-                }
+                    value: "ja",
+                },
             ],
-        }
-    ]
+        },
+    ],
 };
 const commands = [ping, hello, valorant];
 const client = new Client({
@@ -56,4 +50,4 @@ async function main() {
     await register(client, commands, process.argv[2]);
     console.log("registration succeed!");
 }
-main().catch(err => console.error(err));
+main().catch((err) => console.error(err));
