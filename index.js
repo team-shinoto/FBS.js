@@ -1,6 +1,9 @@
 const Discord = require("discord.js");
 require('dotenv').config();
 
+
+let currentCategory = null;
+
 const commands = {
 
     async ping(interaction) {
@@ -19,7 +22,7 @@ const commands = {
                 return `Hello, ${name}!`;
             },
             ja(name) {
-                return `こんにちは、${name}さん。`;
+                return `こんにちは、${name}さん`;
             },
         };
         const name =
@@ -36,15 +39,35 @@ const commands = {
             await interaction.guild.channels.create(name, {
                 type: "GUILD_CATEGORY",
             });
-            const msg = `カテゴリー「${name}」を作成しました。`;
+            currentCategory = interaction.guild.channels.cache.find(
+                (channel) => channel.name === name
+            );
+            const msg = `カテゴリー「${name}」を作成しました`;
             await interaction.reply(msg);
             return;
         } catch (err) {
             console.error(err);
-            await interaction.reply("エラーが発生しました。");
+            await interaction.reply("エラーが発生しました");
             return;
         }
     },
+
+    async create_channel(interaction) {
+        try {
+            const name = interaction.options.get("name");
+            await interaction.guild.channels.create(name.value, {
+                type: "GUILD_TEXT",
+                parent: currentCategory,
+            });
+            const msg = `チャンネル「${name.value}」を作成しました`;
+            await interaction.reply(msg);
+            return;
+        } catch (err) {
+            console.error(err);
+            await interaction.reply("エラーが発生しました");
+            return;
+        }
+    }
 };
 
 async function onInteraction(interaction) {

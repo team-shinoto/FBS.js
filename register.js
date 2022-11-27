@@ -81,7 +81,20 @@ const create_category = {
     ],
 };
 
-const commands = [ping, hello, create_category];
+const create_channel = {
+    name: "create_channel",
+    description: "最後に作成したカテゴリ科目チャンネルを作成します",
+    options: [
+        {
+            type: "STRING",
+            name: "name",
+            description: "科目名を指定します",
+            required: true,
+        },
+    ],
+};
+
+const commands = [ping, hello, create_category, create_channel];
 const client = new Client({
     intents: 0,
 });
