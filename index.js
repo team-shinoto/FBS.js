@@ -13,6 +13,7 @@ const commands = {
         await interaction.editReply(
             [...msg, `往復: ${Date.now() - now}ms`].join("\n")
         );
+        console.log("テスト");
         return;
     },
 
