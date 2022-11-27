@@ -28,7 +28,7 @@ const commands = {
         return interaction.reply(source[lang.value](name));
     },
 
-    async create_category(interaction) {
+    async createCategory(interaction) {
         try {
             const schoolYear = interaction.options.get("schoolYear");
             const term = interaction.options.get("term");

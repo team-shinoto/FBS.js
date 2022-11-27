@@ -34,13 +34,13 @@ const hello = {
     ],
 };
 
-const create_category = {
+const creareCategory = {
     name: "createcategory",
     description: "カテゴリを作成します。",
     options: [
         {
             type: "STRING",
-            name: "schoolYear",
+            name: "year",
             description: "学年を指定します",
             required: true,
             choices: [
@@ -70,18 +70,18 @@ const create_category = {
             choices: [
                 {
                     name: "前期",
-                    value: "1",
+                    value: "前期",
                 },
                 {
                     name: "後期",
-                    value: "2",
+                    value: "後期",
                 },
             ],
         },
     ],
-}
+};
 
-const commands = [ping, hello, create_category];
+const commands = [ping, hello, creareCategory];
 const client = new Client({
     intents: 0,
 });
