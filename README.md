@@ -1,7 +1,7 @@
 # FBS.js
 Functional Discord bot for students
 
-# はじめに
+## はじめに
 
 ```
 node register.js
