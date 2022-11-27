@@ -13,12 +13,12 @@ const ping = {
 
 const hello = {
     name: "hello",
-    description: "botがあなたに挨拶します。",
+    description: "botがあなたに挨拶します",
     options: [
         {
             type: "STRING",
             name: "language",
-            description: "どの言語で挨拶するか指定します。",
+            description: "どの言語で挨拶するか指定します",
             required: true,
             choices: [
                 {
@@ -36,7 +36,7 @@ const hello = {
 
 const create_category = {
     name: "create_category",
-    description: "カテゴリを作成します。",
+    description: "カテゴリを作成します",
     options: [
         {
             type: "STRING",
