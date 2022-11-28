@@ -1,9 +1,9 @@
-const Discord = require("discord.js");
+const {Client, Intents} = require("discord.js");
 const {MessageActionRow, MessageButton, MessageEmbed, Permissions} = require("discord.js");
 require("dotenv").config();
 
-const client = new Discord.Client({
-    intents: 0,
+const client = new Client({
+    intents: [Intents.FLAGS.GUILDS]
 });
 
 let currentCategory = null;
@@ -61,7 +61,7 @@ const commands = {
         try {
             //create channel
             const name = interaction.options.get("name");
-            const everyoneRole = interaction.guild.roles.cache.find((role) => role.name === "@everyone");
+            const everyoneRole = interaction.guild.roles.everyone;
             console.log(everyoneRole);
             await interaction.guild.channels.create(name.value, {
                 type: "GUILD_TEXT",
