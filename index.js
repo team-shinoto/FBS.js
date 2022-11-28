@@ -1,8 +1,14 @@
 const Discord = require("discord.js");
-const {MessageActionRow, MessageButton} = require("discord.js");
+const {MessageActionRow, MessageButton, MessageEmbed, Permissions} = require("discord.js");
 require("dotenv").config();
 
-let currentCategory = null;
+const client = new Discord.Client({
+    intents: 0,
+});
+
+let currentCategoryId = null;
+let currentChannelId = null;
+let currentChannelName = null;
 
 const commands = {
     async ping(interaction) {
@@ -39,7 +45,7 @@ const commands = {
             await interaction.guild.channels.create(name, {
                 type: "GUILD_CATEGORY",
             });
-            currentCategory = interaction.guild.channels.cache.find(
+            currentCategoryId = interaction.guild.channels.cache.find(
                 (channel) => channel.name === name
             );
             const msg = `カテゴリー「${name}」を作成しました`;
@@ -54,30 +60,42 @@ const commands = {
 
     async create_channel(interaction) {
         try {
+            //create channel
             const name = interaction.options.get("name");
+            const everyoneRole = interaction.guild.roles.cache.find((role) => role.name === "@everyone");
+            console.log(everyoneRole);
             await interaction.guild.channels.create(name.value, {
                 type: "GUILD_TEXT",
-                parent: currentCategory,
+                parent: currentCategoryId,
+                permissionOverwrites: [
+                    {
+                        id: everyoneRole,
+                        deny: [Permissions.FLAGS.VIEW_CHANNEL],
+                    },
+                ]
             });
+            currentChannelId = interaction.guild.channels.cache.find(
+                (channel) => channel.name === name.value
+            );
+            currentChannelName = name.value;
             const msg = `チャンネル「${name.value}」を作成しました`;
-            await interaction.reply(msg);
+            //create role
+            //const role = interaction.guild.roles.cache.find(role => role.name === currentChannelName);
+            //interaction.member.roles.add(role);
+            //create button
+            const row = new MessageActionRow().addComponents(
+                new MessageButton()
+                    .setCustomId(currentChannelName)
+                    .setLabel("履修")
+                    .setStyle('PRIMARY')
+            );
+            await interaction.reply({content: msg, components: [row]});
             return;
         } catch (err) {
             console.error(err);
             await interaction.reply("エラーが発生しました");
             return;
         }
-    },
-
-    async create_role(interaction) {
-        const row = new MessageActionRow().addComponents(
-            new MessageButton()
-                .setCustomId("primary")
-                .setLabel("Primary")
-                .setStyle("PRIMARY")
-        );
-        await interaction.reply({content: "Pong!", components: [row]});
-        return;
     },
 };
 
@@ -87,9 +105,16 @@ async function onInteraction(interaction) {
     }
     return commands[interaction.commandName](interaction);
 }
-const client = new Discord.Client({
-    intents: 0,
+
+client.on("interactionCreate", async (interaction) => {
+    if (interaction.customId === "primary") {
+        await interaction.reply({
+            content: "ボタンが押されました。",
+            ephemeral: true,
+        }).catch(console.error);
+    }
 });
+
 client.on("interactionCreate", (interaction) =>
     onInteraction(interaction).catch((err) => console.error(err))
 );

@@ -94,13 +94,8 @@ const create_channel = {
     ],
 };
 
-const create_role = {
-    name: "create_role",
-    description: "ロールを作成します",
-};
 
-
-const commands = [ping, hello, create_category, create_channel, create_role];
+const commands = [ping, hello, create_category, create_channel];
 const client = new Client({
     intents: 0,
 });
