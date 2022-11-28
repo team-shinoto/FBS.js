@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 require('dotenv').config();
-
+const test = require("./button.js");
 
 let currentCategory = null;
 
@@ -8,12 +8,12 @@ const commands = {
 
     async ping(interaction) {
         const now = Date.now();
+        //const msg = [test(), ""];
         const msg = ["pong!", "", `gateway: ${interaction.client.ws.ping}ms`];
         await interaction.reply({content: msg.join("\n"), ephemeral: true});
         await interaction.editReply(
             [...msg, `往復: ${Date.now() - now}ms`].join("\n")
         );
-        console.log("テスト");
         return;
     },
 
