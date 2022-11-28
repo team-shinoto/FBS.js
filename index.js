@@ -6,14 +6,13 @@ const client = new Discord.Client({
     intents: 0,
 });
 
-let currentCategoryId = null;
-let currentChannelId = null;
+let currentCategory = null;
+let currentChannel = null;
 let currentChannelName = null;
 
 const commands = {
     async ping(interaction) {
         const now = Date.now();
-        //const msg = [test(), ""];
         const msg = ["pong!", "", `gateway: ${interaction.client.ws.ping}ms`];
         await interaction.reply({content: msg.join("\n"), ephemeral: true});
         await interaction.editReply(
@@ -45,7 +44,7 @@ const commands = {
             await interaction.guild.channels.create(name, {
                 type: "GUILD_CATEGORY",
             });
-            currentCategoryId = interaction.guild.channels.cache.find(
+            currentCategory = interaction.guild.channels.cache.find(
                 (channel) => channel.name === name
             );
             const msg = `カテゴリー「${name}」を作成しました`;
@@ -66,7 +65,7 @@ const commands = {
             console.log(everyoneRole);
             await interaction.guild.channels.create(name.value, {
                 type: "GUILD_TEXT",
-                parent: currentCategoryId,
+                parent: currentCategory,
                 permissionOverwrites: [
                     {
                         id: everyoneRole,
@@ -74,7 +73,7 @@ const commands = {
                     },
                 ]
             });
-            currentChannelId = interaction.guild.channels.cache.find(
+            currentChannel = interaction.guild.channels.cache.find(
                 (channel) => channel.name === name.value
             );
             currentChannelName = name.value;
