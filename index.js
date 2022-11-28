@@ -1,11 +1,10 @@
 const Discord = require("discord.js");
-require('dotenv').config();
-const test = require("./button.js");
+const {MessageActionRow, MessageButton} = require("discord.js");
+require("dotenv").config();
 
 let currentCategory = null;
 
 const commands = {
-
     async ping(interaction) {
         const now = Date.now();
         //const msg = [test(), ""];
@@ -68,7 +67,18 @@ const commands = {
             await interaction.reply("エラーが発生しました");
             return;
         }
-    }
+    },
+
+    async create_role(interaction) {
+        const row = new MessageActionRow().addComponents(
+            new MessageButton()
+                .setCustomId("primary")
+                .setLabel("Primary")
+                .setStyle("PRIMARY")
+        );
+        await interaction.reply({content: "Pong!", components: [row]});
+        return;
+    },
 };
 
 async function onInteraction(interaction) {
