@@ -3,8 +3,9 @@
         {
             "id": 0,
             "name": "test",
+            "subject": "test",
             "done": false,
-            "user": "user1"
+            "userID": "user1"
         }
     ]
 }
