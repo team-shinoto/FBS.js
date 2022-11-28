@@ -1,4 +1,4 @@
-const {Client, ClientApplication} = require("discord.js");
+const { Client, ClientApplication } = require('discord.js');
 
 async function register(client, commands, guildID) {
     if (guildID == null) {
@@ -7,27 +7,27 @@ async function register(client, commands, guildID) {
     return client.application.commands.set(commands, guildID);
 }
 const ping = {
-    name: "ping",
-    description: "pong!",
+    name: 'ping',
+    description: 'pong!',
 };
 
 const hello = {
-    name: "hello",
-    description: "botがあなたに挨拶します",
+    name: 'hello',
+    description: 'botがあなたに挨拶します',
     options: [
         {
-            type: "STRING",
-            name: "language",
-            description: "どの言語で挨拶するか指定します",
+            type: 'STRING',
+            name: 'language',
+            description: 'どの言語で挨拶するか指定します',
             required: true,
             choices: [
                 {
-                    name: "English",
-                    value: "en",
+                    name: 'English',
+                    value: 'en',
                 },
                 {
-                    name: "Japanese",
-                    value: "ja",
+                    name: 'Japanese',
+                    value: 'ja',
                 },
             ],
         },
@@ -35,46 +35,46 @@ const hello = {
 };
 
 const create_category = {
-    name: "create_category",
-    description: "カテゴリを作成します",
+    name: 'create_category',
+    description: 'カテゴリを作成します',
     options: [
         {
-            type: "STRING",
-            name: "year",
-            description: "学年を指定します",
+            type: 'STRING',
+            name: 'year',
+            description: '学年を指定します',
             required: true,
             choices: [
                 {
-                    name: "1年生",
-                    value: "1",
+                    name: '1年生',
+                    value: '1',
                 },
                 {
-                    name: "2年生",
-                    value: "2",
+                    name: '2年生',
+                    value: '2',
                 },
                 {
-                    name: "3年生",
-                    value: "3",
+                    name: '3年生',
+                    value: '3',
                 },
                 {
-                    name: "4年生",
-                    value: "4",
+                    name: '4年生',
+                    value: '4',
                 },
             ],
         },
         {
-            type: "STRING",
-            name: "term",
-            description: "学期を指定します",
+            type: 'STRING',
+            name: 'term',
+            description: '学期を指定します',
             required: true,
             choices: [
                 {
-                    name: "前期",
-                    value: "前期",
+                    name: '前期',
+                    value: '前期',
                 },
                 {
-                    name: "後期",
-                    value: "後期",
+                    name: '後期',
+                    value: '後期',
                 },
             ],
         },
@@ -82,28 +82,47 @@ const create_category = {
 };
 
 const create_channel = {
-    name: "create_channel",
-    description: "最後に作成したカテゴリ科目チャンネルを作成します",
+    name: 'create_channel',
+    description: '最後に作成したカテゴリ科目チャンネルを作成します',
     options: [
         {
-            type: "STRING",
-            name: "name",
-            description: "科目名を指定します",
+            type: 'STRING',
+            name: 'name',
+            description: '科目名を指定します',
             required: true,
         },
     ],
 };
 
-const commands = [ping, hello, create_category, create_channel];
+const create_todo = {
+    name: 'create_todo',
+    description: 'TODOを作成します',
+    options: [
+        {
+            type: 'STRING',
+            name: 'name',
+            description: 'TODOの名前を指定します',
+            required: true,
+        },
+        {
+            type: 'CHANNEL',
+            name: 'subject',
+            description: 'TODOを作成する科目のチャンネルを指定します',
+            required: true,
+        },
+    ],
+};
+
+const commands = [ping, hello, create_category, create_channel, create_todo];
 const client = new Client({
     intents: 0,
 });
-require("dotenv").config();
+require('dotenv').config();
 client.token = process.env.token;
 async function main() {
     client.application = new ClientApplication(client, {});
     await client.application.fetch();
     await register(client, commands, process.argv[2]);
-    console.log("registration succeed!");
+    console.log('registration succeed!');
 }
 main().catch((err) => console.error(err));
