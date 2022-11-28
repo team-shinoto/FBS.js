@@ -60,17 +60,15 @@ const commands = {
         try {
             const name = interaction.options.get("name");
             //create role
-            interaction.guild.roles.create({
+            const currentRole = await interaction.guild.roles.create({
                 name: name.value,
                 color: 'BLUE',
                 reason: '科目ロールを作成',
             });
-            //undefinedになる
-            const currentRole = interaction.guild.roles.cache.find(role => role.name === name.value);
             console.log(currentRole);
             //create channel
             const everyoneRole = interaction.guild.roles.everyone;
-            await interaction.guild.channels.create(name.value, {
+            currentChannel = await interaction.guild.channels.create(name.value, {
                 type: "GUILD_TEXT",
                 parent: currentCategory,
                 permissionOverwrites: [
@@ -78,15 +76,12 @@ const commands = {
                         id: everyoneRole,
                         deny: [Permissions.FLAGS.VIEW_CHANNEL],
                     },
-                    //{
-                    //    id: currentRole,
-                    //    allow: [Permissions.FLAGS.VIEW_CHANNEL],
-                    //}
+                    {
+                        id: currentRole,
+                        allow: [Permissions.FLAGS.VIEW_CHANNEL],
+                    }
                 ]
             });
-            currentChannel = interaction.guild.channels.cache.find(
-                (channel) => channel.name === name.value
-            );
             const msg = `チャンネルとロール「${name.value}]」を作成しました\n履修を押すとロールが付与されます`;
             //create button
             const row = new MessageActionRow().addComponents(
