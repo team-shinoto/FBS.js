@@ -91,6 +91,12 @@ const create_channel = {
             description: "科目名を指定します",
             required: true,
         },
+        {
+            type: "STRING",
+            name: "parent",
+            description: "チャンネルを作成するカテゴリを指定します\n指定しないと最後に作成したカテゴリに作成します",
+            required: false,
+        }
     ],
 };
 
