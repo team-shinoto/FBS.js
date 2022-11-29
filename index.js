@@ -6,7 +6,14 @@ const client = new Client({
 });
 
 let currentCategory = null;
-let currentChannel = null;
+//let currentChannel = null;
+
+class Channel {
+    constructor(name, parent) {
+        this.name = name;
+        this.parent = parent;
+    }
+}
 
 const commands = {
     async ping(interaction) {
@@ -65,7 +72,7 @@ const commands = {
                 color: 'BLUE',
                 reason: '科目ロールを作成',
             });
-            console.log(currentRole);
+            //console.log(currentRole);
             //create channel
             const everyoneRole = interaction.guild.roles.everyone;
             currentChannel = await interaction.guild.channels.create(name.value, {
@@ -107,14 +114,19 @@ async function onInteraction(interaction) {
     return commands[interaction.commandName](interaction);
 }
 
-//test code
+//button event
 client.on("interactionCreate", async (interaction) => {
-    if (interaction.customId === "primary") {
-        await interaction.reply({
-            content: "ボタンが押されました。",
-            ephemeral: true,
-        }).catch(console.error);
+    try {
+        if (interaction.isButton()) {
+            const role = interaction.guild.roles.cache.find(role => role.name === interaction.customId);
+            await interaction.member.roles.add(role);
+            await interaction.reply({content: `ロール「${role.name}」を付与しました`, ephemeral: true});
+        }
+    } catch (err) {
+        console.error(err);
+        await interaction.reply("エラーが発生しました");
     }
+    return;
 });
 
 client.on("interactionCreate", (interaction) =>
