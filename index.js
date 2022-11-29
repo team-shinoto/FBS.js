@@ -89,7 +89,7 @@ const commands = {
                     }
                 ]
             });
-            const msg = `チャンネルとロール「${name.value}]」を作成しました\n履修を押すとロールが付与されます`;
+            const msg = `チャンネルとロール「${name.value}」を作成しました\n履修を押すとロールが付与されます`;
             //create button
             const row = new MessageActionRow().addComponents(
                 new MessageButton()
