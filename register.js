@@ -94,8 +94,8 @@ const create_channel = {
     ],
 };
 
-const create_todo = {
-    name: 'create_todo',
+const todo_create = {
+    name: 'todo_create',
     description: 'TODOを作成します',
     options: [
         {
@@ -113,7 +113,19 @@ const create_todo = {
     ],
 };
 
-const commands = [ping, hello, create_category, create_channel, create_todo];
+const todo_check = {
+    name: 'todo_check',
+    description: 'TODOのチェックをします',
+};
+
+const commands = [
+    ping,
+    hello,
+    create_category,
+    create_channel,
+    todo_create,
+    todo_check,
+];
 const client = new Client({
     intents: 0,
 });

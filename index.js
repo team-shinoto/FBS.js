@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 require('dotenv').config();
-
+const { allTodoCheck } = require('./todo.js');
 let currentCategory = null;
 
 const getChannelName = (guild, id) => {
@@ -71,7 +71,7 @@ const commands = {
         }
     },
 
-    async create_todo(interaction) {
+    async todo_create(interaction) {
         try {
             let guild = interaction.guild;
             let name = interaction.options.get('name');
@@ -79,6 +79,21 @@ const commands = {
             let subjectName = getChannelName(guild, subject.value);
             const msg = `科目「${subjectName}」のTODO「${name.value}」を作成しました`;
             await interaction.reply(msg);
+            return;
+        } catch (err) {
+            console.error(err);
+            await interaction.reply('エラーが発生しました');
+            return;
+        }
+    },
+
+    async todo_check(interaction) {
+        try {
+            let result = allTodoCheck();
+            await interaction.reply({
+                content: result,
+                ephemeral: false,
+            });
             return;
         } catch (err) {
             console.error(err);
