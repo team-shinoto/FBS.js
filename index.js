@@ -6,14 +6,6 @@ const client = new Client({
 });
 
 let currentCategory = null;
-//let currentChannel = null;
-
-class Channel {
-    constructor(name, parent) {
-        this.name = name;
-        this.parent = parent;
-    }
-}
 
 const commands = {
     async ping(interaction) {
@@ -26,7 +18,7 @@ const commands = {
         return;
     },
 
-    async hello(interaction) {
+    hello(interaction) {
         const source = {
             en(name) {
                 return `Hello, ${name}!`;
@@ -46,13 +38,9 @@ const commands = {
             const year = interaction.options.get("year");
             const term = interaction.options.get("term");
             const name = `${year.value}年${term.value}`;
-            await interaction.guild.channels.create(name, {
+            currentCategory = await interaction.guild.channels.create(name, {
                 type: "GUILD_CATEGORY",
             });
-            currentCategory = interaction.guild.channels.cache.find(
-                (channel) => channel.name === name
-            );
-            //console.log(currentCategory);
             const msg = `カテゴリー「${name}」を作成しました`;
             await interaction.reply(msg);
             return;
@@ -65,6 +53,16 @@ const commands = {
 
     async create_channel(interaction) {
         try {
+            let category = currentCategory;
+            let categoryName = null;
+            let specifiedCategory = null;
+            if (interaction.options.get("parent") !== null) {
+                categoryName = interaction.options.get("parent").value;
+                specifiedCategory = interaction.guild.channels.cache.find(
+                    (channel) => channel.name === categoryName
+                );
+                category = specifiedCategory;
+            }
             const name = interaction.options.get("name");
             //create role
             const currentRole = await interaction.guild.roles.create({
@@ -72,12 +70,11 @@ const commands = {
                 color: 'BLUE',
                 reason: '科目ロールを作成',
             });
-            //console.log(currentRole);
             //create channel
             const everyoneRole = interaction.guild.roles.everyone;
             currentChannel = await interaction.guild.channels.create(name.value, {
                 type: "GUILD_TEXT",
-                parent: currentCategory,
+                parent: category,
                 permissionOverwrites: [
                     {
                         id: everyoneRole,
@@ -89,7 +86,7 @@ const commands = {
                     }
                 ]
             });
-            const msg = `チャンネルとロール「${name.value}]」を作成しました\n履修を押すとロールが付与されます`;
+            const msg = `チャンネルとロール「${name.value}」を作成しました\n履修を押すとロールが付与されます`;
             //create button
             const row = new MessageActionRow().addComponents(
                 new MessageButton()
@@ -107,7 +104,7 @@ const commands = {
     },
 };
 
-async function onInteraction(interaction) {
+function onInteraction(interaction) {
     if (!interaction.isCommand()) {
         return;
     }
