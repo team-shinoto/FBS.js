@@ -18,7 +18,7 @@ const commands = {
         return;
     },
 
-    async hello(interaction) {
+    hello(interaction) {
         const source = {
             en(name) {
                 return `Hello, ${name}!`;
@@ -104,7 +104,7 @@ const commands = {
     },
 };
 
-async function onInteraction(interaction) {
+function onInteraction(interaction) {
     if (!interaction.isCommand()) {
         return;
     }
