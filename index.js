@@ -104,7 +104,7 @@ const commands = {
     },
 };
 
-function onInteraction(interaction) {
+async function onInteraction(interaction) {
     if (!interaction.isCommand()) {
         return;
     }
