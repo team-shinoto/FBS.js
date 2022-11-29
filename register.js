@@ -94,6 +94,7 @@ const create_channel = {
     ],
 };
 
+
 const commands = [ping, hello, create_category, create_channel];
 const client = new Client({
     intents: 0,

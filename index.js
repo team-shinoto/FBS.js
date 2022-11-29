@@ -1,11 +1,21 @@
-const Discord = require("discord.js");
-require('dotenv').config();
+const {Client, Intents, MessageActionRow, MessageButton, Permissions} = require("discord.js");
+require("dotenv").config();
 
+const client = new Client({
+    intents: [Intents.FLAGS.GUILDS]
+});
 
 let currentCategory = null;
+//let currentChannel = null;
+
+class Channel {
+    constructor(name, parent) {
+        this.name = name;
+        this.parent = parent;
+    }
+}
 
 const commands = {
-
     async ping(interaction) {
         const now = Date.now();
         const msg = ["pong!", "", `gateway: ${interaction.client.ws.ping}ms`];
@@ -13,7 +23,6 @@ const commands = {
         await interaction.editReply(
             [...msg, `往復: ${Date.now() - now}ms`].join("\n")
         );
-        console.log("テスト");
         return;
     },
 
@@ -43,6 +52,7 @@ const commands = {
             currentCategory = interaction.guild.channels.cache.find(
                 (channel) => channel.name === name
             );
+            //console.log(currentCategory);
             const msg = `カテゴリー「${name}」を作成しました`;
             await interaction.reply(msg);
             return;
@@ -56,19 +66,45 @@ const commands = {
     async create_channel(interaction) {
         try {
             const name = interaction.options.get("name");
-            await interaction.guild.channels.create(name.value, {
+            //create role
+            const currentRole = await interaction.guild.roles.create({
+                name: name.value,
+                color: 'BLUE',
+                reason: '科目ロールを作成',
+            });
+            //console.log(currentRole);
+            //create channel
+            const everyoneRole = interaction.guild.roles.everyone;
+            currentChannel = await interaction.guild.channels.create(name.value, {
                 type: "GUILD_TEXT",
                 parent: currentCategory,
+                permissionOverwrites: [
+                    {
+                        id: everyoneRole,
+                        deny: [Permissions.FLAGS.VIEW_CHANNEL],
+                    },
+                    {
+                        id: currentRole,
+                        allow: [Permissions.FLAGS.VIEW_CHANNEL],
+                    }
+                ]
             });
-            const msg = `チャンネル「${name.value}」を作成しました`;
-            await interaction.reply(msg);
+            const msg = `チャンネルとロール「${name.value}]」を作成しました\n履修を押すとロールが付与されます`;
+            //create button
+            const row = new MessageActionRow().addComponents(
+                new MessageButton()
+                    .setCustomId(name.value)
+                    .setLabel("履修")
+                    .setStyle('PRIMARY')
+            );
+            await interaction.reply({content: msg, components: [row]});
             return;
         } catch (err) {
             console.error(err);
             await interaction.reply("エラーが発生しました");
             return;
         }
-    }
+    },
 };
 
 async function onInteraction(interaction) {
@@ -77,9 +113,22 @@ async function onInteraction(interaction) {
     }
     return commands[interaction.commandName](interaction);
 }
-const client = new Discord.Client({
-    intents: 0,
+
+//button event
+client.on("interactionCreate", async (interaction) => {
+    try {
+        if (interaction.isButton()) {
+            const role = interaction.guild.roles.cache.find(role => role.name === interaction.customId);
+            await interaction.member.roles.add(role);
+            await interaction.reply({content: `ロール「${role.name}」を付与しました`, ephemeral: true});
+        }
+    } catch (err) {
+        console.error(err);
+        await interaction.reply("エラーが発生しました");
+    }
+    return;
 });
+
 client.on("interactionCreate", (interaction) =>
     onInteraction(interaction).catch((err) => console.error(err))
 );
