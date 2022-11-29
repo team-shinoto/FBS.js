@@ -1,5 +1,5 @@
 const {Client, Intents, MessageActionRow, MessageButton, Permissions} = require("discord.js");
-const { allTodoCheck } = require('./todo.js');
+const { createTodo,allTodoCheck } = require('./todo.js');
 
 require("dotenv").config();
 
@@ -112,8 +112,15 @@ const commands = {
         try {
             let guild = interaction.guild;
             let name = interaction.options.get('name');
-            let subject = interaction.options.get('subject');
-            let subjectName = getChannelName(guild, subject.value);
+            let subjectName = getChannelName(guild, interaction.options.get('subject').value);
+            let user = interaction.user;
+            let options = {
+                name: name.value,
+                subject: subjectName,
+                userID: user.id,
+                userName: user.username,
+            }
+            createTodo(options);
             const msg = `科目「${subjectName}」のTODO「${name.value}」を作成しました`;
             await interaction.reply(msg);
             return;
