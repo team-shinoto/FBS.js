@@ -26,12 +26,17 @@
         {
             "userID": "user1",
             "userName": "user1name",
-            "hasTodo": [0, 1]
+            "hasTodo": [
+                0,
+                1
+            ]
         },
         {
             "userID": "user2",
             "userName": "user2name",
-            "hasTodo": [2]
+            "hasTodo": [
+                2
+            ]
         }
     ]
 }

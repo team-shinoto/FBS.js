@@ -3,9 +3,16 @@
 // created by: Aoki Takumi
 const fs = require('fs');
 
+const readtodojson = () => {
+    return JSON.parse(fs.readFileSync('./todo.json', 'utf8'));
+}
+
+const writetodojson = (data) => {
+    fs.writeFileSync('./todo.json', JSON.stringify(data, null, 4), 'utf8');
+}
+
 const createTodo = (options) => {
-    let data = fs.readFileSync('./todo.json', 'utf8');
-    let todos = JSON.parse(data);
+    let todos = readtodojson();
     //todoのidを作成
     let ary = new Array(todos.todo.length);
     ary.fill(0);
@@ -46,8 +53,7 @@ const createTodo = (options) => {
         }
     }
     //todo.jsonを更新
-    let json = JSON.stringify(todos, null, 4);
-    fs.writeFileSync('./todo.json', json, 'utf8');
+    writetodojson(todos);
 };
 
 const allTodoCheck = () => {
