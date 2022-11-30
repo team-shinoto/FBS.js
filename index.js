@@ -119,11 +119,12 @@ const commands = {
             var dt = new Date();
             cronList.push(cron.schedule(hour.value, () => {
                 channel.send(`${dt.getMonth()+1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`);
-            }));
-            console.log(cronList[0].);
-            console.log(cronList[0].name);
-            console.log(cronList[0].name);
-            console.log(cronList[0].name);
+            }), name.value);
+            console.log(cronList);
+            console.log("--------");
+            if(name.value == cronList[1]){
+                console.log("ヒット")
+            }
             return;
         } catch (err) {
             console.error(err);
@@ -136,9 +137,9 @@ const commands = {
         try {
             const name = interaction.options.get("name");
 
-            for(let i = 0; i < cronList.length; i++){
-                if (cronList[i].name === name.value) {
-                    cronList[i].destroy();
+            for(let i = 1; i < cronList.length; i+=2){
+                if (cronList[i] == name.value) {
+                    cronList[i-1].stop();
                 }
             }
         const cronDeleteMsg = '「' + name.value + '」は終わりましたか？';
