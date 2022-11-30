@@ -1,4 +1,6 @@
-const {Client, Intents, MessageActionRow, MessageButton, Permissions} = require("discord.js");
+const { Client, Intents, MessageActionRow, MessageButton, Permissions } = require("discord.js");
+const cron = require('node-cron');
+
 require("dotenv").config();
 
 const client = new Client({
@@ -6,12 +8,13 @@ const client = new Client({
 });
 
 let currentCategory = null;
+let cronList = [];
 
 const commands = {
     async ping(interaction) {
         const now = Date.now();
         const msg = ["pong!", "", `gateway: ${interaction.client.ws.ping}ms`];
-        await interaction.reply({content: msg.join("\n"), ephemeral: true});
+        await interaction.reply({ content: msg.join("\n"), ephemeral: true });
         await interaction.editReply(
             [...msg, `往復: ${Date.now() - now}ms`].join("\n")
         );
@@ -94,11 +97,56 @@ const commands = {
                     .setLabel("履修")
                     .setStyle('PRIMARY')
             );
-            await interaction.reply({content: msg, components: [row]});
+            await interaction.reply({ content: msg, components: [row] });
             return;
         } catch (err) {
             console.error(err);
             await interaction.reply("エラーが発生しました");
+            return;
+        }
+    },
+
+    async reminder(interaction) {
+        try {
+            const name = interaction.options.get("name");
+            const hour = interaction.options.get("hour");
+            const msg = `「${name.value}」を毎日${hour.value}に通知するリマインドを作成しました`;
+            await interaction.reply(msg);
+
+            const channel = interaction.guild.channels.cache.find((channel) => channel.name === "リマインド");
+            const cronMsg = '「' + name.value + '」は終わりましたか？';
+
+            var dt = new Date();
+            cronList.push(cron.schedule(hour.value, () => {
+                channel.send(`${dt.getMonth()+1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`);
+            }));
+            console.log(cronList[0].);
+            console.log(cronList[0].name);
+            console.log(cronList[0].name);
+            console.log(cronList[0].name);
+            return;
+        } catch (err) {
+            console.error(err);
+            interaction.reply("エラーが発生しました");
+            return;
+        }
+    },
+
+    async delete_reminder(interaction) {
+        try {
+            const name = interaction.options.get("name");
+
+            for(let i = 0; i < cronList.length; i++){
+                if (cronList[i].name === name.value) {
+                    cronList[i].destroy();
+                }
+            }
+        const cronDeleteMsg = '「' + name.value + '」は終わりましたか？';
+        await interaction.reply(`${cronDeleteMsg}のリマインドを削除しました`);
+            return;
+        } catch (err) {
+            console.error(err);
+            interaction.reply("エラーが発生しました");
             return;
         }
     },
@@ -117,7 +165,7 @@ client.on("interactionCreate", async (interaction) => {
         if (interaction.isButton()) {
             const role = interaction.guild.roles.cache.find(role => role.name === interaction.customId);
             await interaction.member.roles.add(role);
-            await interaction.reply({content: `ロール「${role.name}」を付与しました`, ephemeral: true});
+            await interaction.reply({ content: `ロール「${role.name}」を付与しました`, ephemeral: true });
         }
     } catch (err) {
         console.error(err);

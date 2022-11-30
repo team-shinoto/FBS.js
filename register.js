@@ -100,8 +100,61 @@ const create_channel = {
     ],
 };
 
+const reminder = {
+    name: "reminder",
+    description: "リマインドを設定します",
+    options: [
+        {
+            type: "STRING",
+            name: "name",
+            description: "再通知名を指定します",
+            required: true,
+        },
+        {
+            type: "STRING",
+            name: "hour",
+            description: "時間を指定します",
+            required: true,
+            choices: [
+                {
+                    name: "5秒毎",
+                    value: "0,10,20,30,45,55 * * * * *",
+                },
+                {
+                    name: "毎日0時",
+                    value: "0 0 0 * * *",
+                },
+                {
+                    name: "毎日6時",
+                    value: "0 0 6 * * *",
+                },
+                {
+                    name: "毎日12時",
+                    value: "0 0 12 * * *",
+                },
+                {
+                    name: "毎日18時",
+                    value: "0 0 18 * * *",
+                },
+            ],
+        },
+    ],
+};
 
-const commands = [ping, hello, create_category, create_channel];
+const delete_reminder = {
+    name: "delete_reminder",
+    description: "リマインドを削除します",
+    options: [
+        {
+            type: "STRING",
+            name: "name",
+            description: "削除したいリマインド名を指定します",
+            required: true,
+        },
+    ],
+};
+
+const commands = [ping, hello, create_category, create_channel, reminder, delete_reminder];
 const client = new Client({
     intents: 0,
 });
