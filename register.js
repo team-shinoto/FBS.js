@@ -102,6 +102,11 @@ const create_channel = {
 
 const reminder = {
     name: "reminder",
+    description: "現在登録中のリマインダーを確認します",
+};
+
+const create_reminder = {
+    name: "create_reminder",
     description: "リマインドを設定します",
     options: [
         {
@@ -118,23 +123,23 @@ const reminder = {
             choices: [
                 {
                     name: "5秒毎",
-                    value: "0,10,20,30,45,55 * * * * *",
+                    value: "5秒ごと */5 * * * * *", //valueは先頭5文字までをnameとして使い、それ以降はスライスしてcronに使う
                 },
                 {
                     name: "毎日0時",
-                    value: "0 0 0 * * *",
+                    value: "毎日0時 0 0 0 * * *",
                 },
                 {
                     name: "毎日6時",
-                    value: "0 0 6 * * *",
+                    value: "毎日6時 0 0 6 * * *",
                 },
                 {
                     name: "毎日12時",
-                    value: "0 0 12 * * *",
+                    value: "毎日12時0 0 12 * * *",
                 },
                 {
                     name: "毎日18時",
-                    value: "0 0 18 * * *",
+                    value: "毎日18時0 0 18 * * *",
                 },
             ],
         },
@@ -154,7 +159,7 @@ const delete_reminder = {
     ],
 };
 
-const commands = [ping, hello, create_category, create_channel, reminder, delete_reminder];
+const commands = [ping, hello, create_category, create_channel, reminder, create_reminder, delete_reminder];
 const client = new Client({
     intents: 0,
 });

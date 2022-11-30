@@ -8,7 +8,7 @@ const client = new Client({
 });
 
 let currentCategory = null;
-let cronList = [];
+let cronList = [[]];
 
 const commands = {
     async ping(interaction) {
@@ -108,23 +108,42 @@ const commands = {
 
     async reminder(interaction) {
         try {
+        await interaction.reply(`現在登録されているリマインダーは以下の通りです`);
+
+        for(let i = 0; i < cronList.length; i++){
+            await interaction.reply(`「${cronList[i][1]}」を${cronList[i][2]}`);
+        }
+        return;
+        } catch (err) {
+            console.error(err);
+            interaction.reply("現在登録されているリマインダーはありません");
+            return;
+        }
+    },
+
+
+    async create_reminder(interaction) {
+        try {
             const name = interaction.options.get("name");
             const hour = interaction.options.get("hour");
-            const msg = `「${name.value}」を毎日${hour.value}に通知するリマインドを作成しました`;
+            const time = hour.value.slice(0, 4);
+            const value = hour.value.slice(5, hour.value.length);
+            console.log(value);
+            const msg = `「${name.value}」を${time}に通知するリマインドを作成しました`;
             await interaction.reply(msg);
 
             const channel = interaction.guild.channels.cache.find((channel) => channel.name === "リマインド");
             const cronMsg = '「' + name.value + '」は終わりましたか？';
 
             var dt = new Date();
-            cronList.push(cron.schedule(hour.value, () => {
+            cronList.push([cron.schedule(value, () => {
                 channel.send(`${dt.getMonth()+1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`);
-            }), name.value);
-            console.log(cronList);
-            console.log("--------");
-            if(name.value == cronList[1]){
-                console.log("ヒット")
-            }
+            }), name.value, time]);
+            /*
+            console.log(cronList[1][0]);
+            console.log(cronList[1][1]);
+            console.log(cronList[1][2]);
+            */
             return;
         } catch (err) {
             console.error(err);
@@ -137,13 +156,13 @@ const commands = {
         try {
             const name = interaction.options.get("name");
 
-            for(let i = 1; i < cronList.length; i+=2){
-                if (cronList[i] == name.value) {
-                    cronList[i-1].stop();
+            for(let i = 0; i < cronList.length; i++){
+                if (cronList[i][1] === name.value) {
+                    cronList[i][0].stop();
                 }
             }
-        const cronDeleteMsg = '「' + name.value + '」は終わりましたか？';
-        await interaction.reply(`${cronDeleteMsg}のリマインドを削除しました`);
+        const cronDeleteMsg = '「' + name.value + '」のリマインドを削除しました';
+        await interaction.reply(`${cronDeleteMsg}`);
             return;
         } catch (err) {
             console.error(err);
