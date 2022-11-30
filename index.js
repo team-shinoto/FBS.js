@@ -1,5 +1,5 @@
-const {Client, Intents, MessageActionRow, MessageButton, Permissions} = require("discord.js");
-const { createTodo,allTodoCheck } = require('./todo.js');
+const { Client, Intents, MessageActionRow, MessageButton, Permissions } = require("discord.js");
+const { createTodo, allTodoCheck } = require('./todo.js');
 
 require("dotenv").config();
 
@@ -99,7 +99,7 @@ const commands = {
                     .setLabel("履修")
                     .setStyle('PRIMARY')
             );
-            await interaction.reply({content: msg, components: [row]});
+            await interaction.reply({ content: msg, components: [row] });
             return;
         } catch (err) {
             console.error(err);
@@ -120,7 +120,7 @@ const commands = {
                 userID: user.id,
                 userName: user.username,
             }
-            createTodo(client,options);
+            createTodo(client, options);
             const msg = `科目「${subjectName}」のTODO「${name.value}」を作成しました`;
             await interaction.reply(msg);
             return;
@@ -148,11 +148,8 @@ const commands = {
 
     async delete_dm(interaction) {
         try {
-            let user = interaction.user;
-            let dmid = await user.createDM().id;
-            let dm = await client.channels.fetch(dmid);
-            await dm.delete();
-            const msg = `DMを削除しました`;
+            interaction.user.deleteDM(interaction.user.id);
+            const msg = "DMを削除しました";
             await interaction.reply(msg);
         } catch (err) {
             console.error(err);
@@ -175,7 +172,7 @@ client.on("interactionCreate", async (interaction) => {
         if (interaction.isButton()) {
             const role = interaction.guild.roles.cache.find(role => role.name === interaction.customId);
             await interaction.member.roles.add(role);
-            await interaction.reply({content: `ロール「${role.name}」を付与しました`, ephemeral: true});
+            await interaction.reply({ content: `ロール「${role.name}」を付与しました`, ephemeral: true });
         }
     } catch (err) {
         console.error(err);
