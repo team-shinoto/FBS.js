@@ -10,21 +10,28 @@ const readtodojson = () => {
 const writetodojson = (data) => {
     fs.writeFileSync('./todo.json', JSON.stringify(data, null, 4), 'utf8');
 }
+const readdmjson = () => {
+    return JSON.parse(fs.readFileSync('./dmChannels.json', 'utf8'));
+}
 
-const createTodo = (options) => {
+const writedmjson = (data) => {
+    fs.writeFileSync('./dmChannels.json', JSON.stringify(data, null, 4), 'utf8');
+}
+
+const createTodo = (client, options) => {
     let todos = readtodojson();
     //todoのidを作成
     let ary = new Array(todos.todo.length);
     ary.fill(0);
-    for(let i = 0; i < todos.todo.length; i++) {
-        if(todos.todo[i].id >= ary.length) {
+    for (let i = 0; i < todos.todo.length; i++) {
+        if (todos.todo[i].id >= ary.length) {
             //
         } else {
             ary[todos.todo[i].id] = 1;
         }
     }
     let index = ary.indexOf(0);
-    if(index === -1) {
+    if (index === -1) {
         index = ary.length;
     }
     //todoを作成
@@ -42,13 +49,14 @@ const createTodo = (options) => {
         if (users[i].userID === options.userID) {
             users[i].hasTodo.push(index);
             break;
-        } else if(i === users.length - 1) {
+        } else if (i === users.length - 1) {
             let newUser = {
                 userID: options.userID,
                 userName: options.userName,
                 hasTodo: [index],
             }
             users.push(newUser);
+            client.users.cache.get(options.userID).send("TODOを作成しました。");
             break;
         }
     }
@@ -89,17 +97,6 @@ const allTodoCheck = () => {
     }
     console.log(`checking finished. result: ${status}`);
     return `checking finished. result: ${status}`;
-};
-
-const todoJson = () => {
-    return new Promise((resolve, reject) => {
-        fs.readFile('./todo.json', 'utf8', (err, data) => {
-            if (err) {
-                reject('todo.json not found');
-            }
-            resolve(data);
-        });
-    });
 };
 
 module.exports = {

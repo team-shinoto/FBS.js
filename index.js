@@ -120,7 +120,7 @@ const commands = {
                 userID: user.id,
                 userName: user.username,
             }
-            createTodo(options);
+            createTodo(client,options);
             const msg = `科目「${subjectName}」のTODO「${name.value}」を作成しました`;
             await interaction.reply(msg);
             return;
@@ -145,6 +145,21 @@ const commands = {
             return;
         }
     },
+
+    async delete_dm(interaction) {
+        try {
+            let user = interaction.user;
+            let dmid = await user.createDM().id;
+            let dm = await client.channels.fetch(dmid);
+            await dm.delete();
+            const msg = `DMを削除しました`;
+            await interaction.reply(msg);
+        } catch (err) {
+            console.error(err);
+            await interaction.reply('エラーが発生しました');
+            return;
+        }
+    }
 };
 
 async function onInteraction(interaction) {

@@ -124,6 +124,12 @@ const todo_check = {
     description: 'TODOのチェックをします',
 };
 
+const delete_dm = {
+    name: 'delete_dm',
+    description: 'DMを削除します',
+};
+
+
 const commands = [
     ping,
     hello,
@@ -131,6 +137,7 @@ const commands = [
     create_channel,
     todo_create,
     todo_check,
+    delete_dm,
 ];
 const client = new Client({
     intents: 0,
