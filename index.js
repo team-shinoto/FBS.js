@@ -267,7 +267,7 @@ const commands = {
             return;
         }
     },
-    
+
 
     async delete_dm(interaction) {
         //botとのDMの内容を削除します
