@@ -20,6 +20,7 @@ const client = new Client({
 });
 
 let currentCategory = null;
+let cronList = [];
 
 const getChannelName = (guild, id) => {
     return guild.channels.cache.get(id).name;
@@ -179,9 +180,8 @@ const commands = {
                         name: subjectAry[i][j].name,
                         value: `インデックス: [${subjectAry[i][
                             j
-                        ].id.toString()}]\nステータス: ${
-                            subjectAry[i][j].done ? '完了' : '未完了'
-                        }`,
+                        ].id.toString()}]\nステータス: ${subjectAry[i][j].done ? '完了' : '未完了'
+                            }`,
                         inline: true,
                     });
                     //fields.push({name: '\u200b',value: '\u200b',inline: true,});
