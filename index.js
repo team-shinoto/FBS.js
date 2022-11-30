@@ -108,15 +108,18 @@ const commands = {
 
     async reminder(interaction) {
         try {
-        await interaction.reply(`現在登録されているリマインダーは以下の通りです`);
+            const begin = `現在登録されているリマインダーは以下の通りです`;
+            await interaction.reply(begin);
 
-        for(let i = 0; i < cronList.length; i++){
-            await interaction.reply(`「${cronList[i][1]}」を${cronList[i][2]}`);
-        }
-        return;
+            for (let i = 0; i < cronList.length; i++) {
+                if(cronList[i][1] != null){
+                    await interaction.editReply(`「${cronList[i][1]}」を${cronList[i][2]}\n`);
+                }
+            }
+            return;
         } catch (err) {
             console.error(err);
-            interaction.reply("現在登録されているリマインダーはありません");
+            await interaction.reply("現在登録されているリマインダーはありません");
             return;
         }
     },
@@ -128,7 +131,7 @@ const commands = {
             const hour = interaction.options.get("hour");
             const time = hour.value.slice(0, 4);
             const value = hour.value.slice(5, hour.value.length);
-            console.log(value);
+
             const msg = `「${name.value}」を${time}に通知するリマインドを作成しました`;
             await interaction.reply(msg);
 
@@ -137,7 +140,7 @@ const commands = {
 
             var dt = new Date();
             cronList.push([cron.schedule(value, () => {
-                channel.send(`${dt.getMonth()+1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`);
+                channel.send(`${dt.getMonth() + 1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`);
             }), name.value, time]);
             /*
             console.log(cronList[1][0]);
@@ -156,13 +159,14 @@ const commands = {
         try {
             const name = interaction.options.get("name");
 
-            for(let i = 0; i < cronList.length; i++){
+            for (let i = 0; i < cronList.length; i++) {
                 if (cronList[i][1] === name.value) {
                     cronList[i][0].stop();
+                    cronList[i][1] = null;
                 }
             }
-        const cronDeleteMsg = '「' + name.value + '」のリマインドを削除しました';
-        await interaction.reply(`${cronDeleteMsg}`);
+            const cronDeleteMsg = '「' + name.value + '」のリマインドを削除しました';
+            await interaction.reply(`${cronDeleteMsg}`);
             return;
         } catch (err) {
             console.error(err);
