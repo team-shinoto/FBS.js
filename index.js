@@ -1,4 +1,5 @@
-const {Client, Intents, MessageActionRow, MessageButton, Permissions} = require("discord.js");
+const { Client, Intents, MessageActionRow, MessageButton, Permissions } = require("discord.js");
+const { createTodo, allTodoCheck } = require('./todo.js');
 require("dotenv").config();
 
 const client = new Client({
@@ -7,13 +8,17 @@ const client = new Client({
 
 let currentCategory = null;
 
+const getChannelName = (guild, id) => {
+    return guild.channels.cache.get(id).name;
+};
+
 const commands = {
     async ping(interaction) {
         const now = Date.now();
-        const msg = ["pong!", "", `gateway: ${interaction.client.ws.ping}ms`];
-        await interaction.reply({content: msg.join("\n"), ephemeral: true});
+        const msg = ['pong!', '', `gateway: ${interaction.client.ws.ping}ms`];
+        await interaction.reply({ content: msg.join('\n'), ephemeral: true });
         await interaction.editReply(
-            [...msg, `往復: ${Date.now() - now}ms`].join("\n")
+            [...msg, `往復: ${Date.now() - now}ms`].join('\n')
         );
         return;
     },
@@ -35,8 +40,8 @@ const commands = {
 
     async create_category(interaction) {
         try {
-            const year = interaction.options.get("year");
-            const term = interaction.options.get("term");
+            const year = interaction.options.get('year');
+            const term = interaction.options.get('term');
             const name = `${year.value}年${term.value}`;
             currentCategory = await interaction.guild.channels.create(name, {
                 type: "GUILD_CATEGORY",
@@ -46,7 +51,7 @@ const commands = {
             return;
         } catch (err) {
             console.error(err);
-            await interaction.reply("エラーが発生しました");
+            await interaction.reply('エラーが発生しました');
             return;
         }
     },
@@ -94,11 +99,61 @@ const commands = {
                     .setLabel("履修")
                     .setStyle('PRIMARY')
             );
-            await interaction.reply({content: msg, components: [row]});
+            await interaction.reply({ content: msg, components: [row] });
             return;
         } catch (err) {
             console.error(err);
-            await interaction.reply("エラーが発生しました");
+            await interaction.reply('エラーが発生しました');
+            return;
+        }
+    },
+
+    async todo_create(interaction) {
+        try {
+            let guild = interaction.guild;
+            let name = interaction.options.get('name');
+            let subjectName = getChannelName(guild, interaction.options.get('subject').value);
+            let user = interaction.user;
+            let options = {
+                name: name.value,
+                subject: subjectName,
+                userID: user.id,
+                userName: user.username,
+            }
+            createTodo(client, options);
+            const msg = `科目「${subjectName}」のTODO「${name.value}」を作成しました`;
+            await interaction.reply(msg);
+            return;
+        } catch (err) {
+            console.error(err);
+            await interaction.reply('エラーが発生しました');
+            return;
+        }
+    },
+
+    async todo_check(interaction) {
+        try {
+            let result = allTodoCheck();
+            await interaction.reply({
+                content: result,
+                ephemeral: false,
+            });
+            return;
+        } catch (err) {
+            console.error(err);
+            await interaction.reply('エラーが発生しました');
+            return;
+        }
+    },
+
+    async delete_dm(interaction) {
+        try {
+            interaction.user.deleteDM(interaction.user.id);
+            const msg = "DMを削除しました";
+            await interaction.reply(msg);
+        } catch (err) {
+            console.error(err);
+            await interaction.reply('エラーが発生しました');
             return;
         }
     },
@@ -117,7 +172,7 @@ client.on("interactionCreate", async (interaction) => {
         if (interaction.isButton()) {
             const role = interaction.guild.roles.cache.find(role => role.name === interaction.customId);
             await interaction.member.roles.add(role);
-            await interaction.reply({content: `ロール「${role.name}」を付与しました`, ephemeral: true});
+            await interaction.reply({ content: `ロール「${role.name}」を付与しました`, ephemeral: true });
         }
     } catch (err) {
         console.error(err);
