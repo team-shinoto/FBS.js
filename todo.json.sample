@@ -1,0 +1,20 @@
+{
+    "todo": [
+        {
+            "id": 0,
+            "name": "test",
+            "subject": "test",
+            "done": false,
+            "userID": "user0"
+        }
+    ],
+    "users": [
+        {
+            "userID": "user0",
+            "userName": "user0name",
+            "hasTodo": [
+                0
+            ]
+        }
+    ]
+}
