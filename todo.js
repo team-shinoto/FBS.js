@@ -5,18 +5,22 @@ const fs = require('fs');
 
 const readtodojson = () => {
     return JSON.parse(fs.readFileSync('./todo.json', 'utf8'));
-}
+};
 
 const writetodojson = (data) => {
     fs.writeFileSync('./todo.json', JSON.stringify(data, null, 4), 'utf8');
-}
+};
 const readdmjson = () => {
     return JSON.parse(fs.readFileSync('./dmChannels.json', 'utf8'));
-}
+};
 
 const writedmjson = (data) => {
-    fs.writeFileSync('./dmChannels.json', JSON.stringify(data, null, 4), 'utf8');
-}
+    fs.writeFileSync(
+        './dmChannels.json',
+        JSON.stringify(data, null, 4),
+        'utf8'
+    );
+};
 
 const createTodo = (client, options) => {
     let todos = readtodojson();
@@ -48,15 +52,20 @@ const createTodo = (client, options) => {
     for (let i = 0; i < users.length; i++) {
         if (users[i].userID === options.userID) {
             users[i].hasTodo.push(index);
+            client.users.cache
+                .get(options.userID)
+                .send(
+                    'TODOを追加しました。取得にはコマンドを実行してください。'
+                );
             break;
         } else if (i === users.length - 1) {
             let newUser = {
                 userID: options.userID,
                 userName: options.userName,
                 hasTodo: [index],
-            }
+            };
             users.push(newUser);
-            client.users.cache.get(options.userID).send("TODOを作成しました。");
+            client.users.cache.get(options.userID).send('TODOを作成しました。');
             break;
         }
     }
@@ -65,7 +74,7 @@ const createTodo = (client, options) => {
 };
 
 const allTodoCheck = () => {
-    console.log('Checking all todo...');
+    let msg = 'Checking all todo...';
     let todos = null;
     let status = 'yet';
     data = fs.readFileSync('./todo.json', 'utf8');
@@ -83,20 +92,20 @@ const allTodoCheck = () => {
                 if (currents[i].id === hasTodoId) {
                     break;
                 } else if (i === currents.length - 1) {
-                    console.log(
-                        `Error: ${el.userName} has no todoID ${hasTodoId}`
-                    );
+                    msg =
+                        msg +
+                        `Error: ${el.userName} has no todoID ${hasTodoId}`;
                     status = 'error';
                 }
             }
         });
-        console.log(`${el.userName}'s todo checked`);
+        msg = msg + `${el.userName}'s todo checked`;
     });
     if (status !== 'error') {
         status = 'passed';
     }
-    console.log(`checking finished. result: ${status}`);
-    return `checking finished. result: ${status}`;
+    msg = msg + `checking finished. result: ${status}`;
+    return msg;
 };
 
 module.exports = {
