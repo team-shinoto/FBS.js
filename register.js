@@ -124,10 +124,10 @@ const todo_check = {
     description: 'TODOのチェックをします',
 };
 
-const delete_dm = {
+/* const delete_dm = {
     name: 'delete_dm',
     description: 'DMを削除します',
-};
+}; */
 
 
 const commands = [
@@ -136,8 +136,7 @@ const commands = [
     create_category,
     create_channel,
     todo_create,
-    todo_check,
-    delete_dm,
+    todo_check
 ];
 const client = new Client({
     intents: 0,
