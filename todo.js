@@ -4,10 +4,12 @@
 const fs = require('fs');
 
 const readtodojson = () => {
+    //objectを返す。文字列ではない。
     return JSON.parse(fs.readFileSync('./todo.json', 'utf8'));
 };
 
 const writetodojson = (data) => {
+    //objectを受け取り、文字列として書き出す。
     fs.writeFileSync('./todo.json', JSON.stringify(data, null, 4), 'utf8');
 };
 const readdmjson = () => {
@@ -74,7 +76,7 @@ const createTodo = (client, options) => {
 };
 
 const allTodoCheck = () => {
-    let msg = 'Checking all todo...';
+    let msg = 'todoデータベースをチェックします...\n';
     let todos = null;
     let status = 'yet';
     data = fs.readFileSync('./todo.json', 'utf8');
@@ -94,21 +96,27 @@ const allTodoCheck = () => {
                 } else if (i === currents.length - 1) {
                     msg =
                         msg +
-                        `Error: ${el.userName} has no todoID ${hasTodoId}`;
+                        `エラー: ユーザー「${el.userName} 」は、インデックス[${hasTodoId}]のTODOを所有していません。\n`;
                     status = 'error';
                 }
             }
         });
-        msg = msg + `${el.userName}'s todo checked`;
+        msg = msg + `ユーザー「${el.userName}」のチェックを完了しました。\n`;
     });
     if (status !== 'error') {
         status = 'passed';
     }
-    msg = msg + `checking finished. result: ${status}`;
+    msg = msg + `チェック完了 ステータス: ${status}`;
     return msg;
+};
+
+const p = (val) => {
+    console.log('value: ' + val);
+    console.log('type: ' + typeof val);
 };
 
 module.exports = {
     createTodo,
     allTodoCheck,
+    p,
 };

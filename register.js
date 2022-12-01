@@ -92,11 +92,12 @@ const create_channel = {
             required: true,
         },
         {
-            type: "STRING",
-            name: "parent",
-            description: "チャンネルを作成するカテゴリを指定します指定しないと最後に作成したカテゴリに作成します",
+            type: 'STRING',
+            name: 'parent',
+            description:
+                'チャンネルを作成するカテゴリを指定します指定しないと最後に作成したカテゴリに作成します',
             required: false,
-        }
+        },
     ],
 };
 
@@ -117,25 +118,24 @@ const todo_create = {
             required: true,
         },
         {
-            type: "STRING",
-            name: "parent",
-            description: "チャンネルを作成するカテゴリを指定します\n指定しないと最後に作成したカテゴリに作成します",
+            type: 'STRING',
+            name: 'parent',
+            description:
+                'チャンネルを作成するカテゴリを指定します\n指定しないと最後に作成したカテゴリに作成します',
             required: false,
-        }
+        },
     ],
 };
-
 
 const todo_check = {
     name: 'todo_check',
     description: 'TODOのチェックをします',
 };
 
-/* const delete_dm = {
+const delete_dm = {
     name: 'delete_dm',
-    description: 'DMを削除します',
-}; */
-
+    description: 'botとのDMの内容を削除します',
+};
 
 const commands = [
     ping,
@@ -143,7 +143,7 @@ const commands = [
     create_category,
     create_channel,
     todo_create,
-    todo_check
+    todo_check,
 ];
 
 const client = new Client({

@@ -1,4 +1,3 @@
-const {createTodo, allTodoCheck} = require('./todo.js');
+const { createTodo, allTodoCheck } = require('./todo.js');
 
-allTodoCheck();
-
+console.log(allTodoCheck());
