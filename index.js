@@ -1,6 +1,5 @@
 const { Client, Intents, MessageActionRow, MessageButton, Permissions } = require("discord.js");
 const { createTodo, allTodoCheck } = require('./todo.js');
-
 require("dotenv").config();
 
 const client = new Client({
@@ -21,6 +20,7 @@ const commands = {
         await interaction.editReply(
             [...msg, `往復: ${Date.now() - now}ms`].join('\n')
         );
+        return;
     },
 
     hello(interaction) {
@@ -156,7 +156,7 @@ const commands = {
             await interaction.reply('エラーが発生しました');
             return;
         }
-    }
+    },
 };
 
 async function onInteraction(interaction) {

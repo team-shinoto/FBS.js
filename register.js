@@ -116,8 +116,15 @@ const todo_create = {
             description: 'TODOを作成する科目のチャンネルを指定します',
             required: true,
         },
+        {
+            type: "STRING",
+            name: "parent",
+            description: "チャンネルを作成するカテゴリを指定します\n指定しないと最後に作成したカテゴリに作成します",
+            required: false,
+        }
     ],
 };
+
 
 const todo_check = {
     name: 'todo_check',
@@ -138,6 +145,7 @@ const commands = [
     todo_create,
     todo_check
 ];
+
 const client = new Client({
     intents: 0,
 });
