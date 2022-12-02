@@ -144,6 +144,7 @@ const commands = [
     create_channel,
     todo_create,
     todo_check,
+    delete_dm,
 ];
 
 const client = new Client({
