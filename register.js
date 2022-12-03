@@ -140,6 +140,14 @@ const delete_dm = {
 const todo_get = {
     name: 'todo_get',
     description: 'TODOを取得します',
+    options: [
+        {
+            type: 'BOOLEAN',
+            name: 'ifdm',
+            description: 'DMでTODOを取得するかどうかを指定します',
+            required: true,
+        },
+    ],
 };
 
 const exit = {

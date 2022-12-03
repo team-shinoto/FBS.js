@@ -4,8 +4,9 @@ const {
     MessageActionRow,
     MessageButton,
     Permissions,
+    MessageEmbed,
 } = require('discord.js');
-const { createTodo, allTodoCheck, p } = require('./todo.js');
+const { createTodo, allTodoCheck, getTodo } = require('./todo.js');
 require('dotenv').config();
 
 const client = new Client({
@@ -159,16 +160,40 @@ const commands = {
     },
 
     async todo_get(interaction) {
+        let ifdm = interaction.options.get('ifdm').value;
         console.log(`${interaction.user.username}がtodo_getを実行`);
         try {
+            let subjects, subjectAry;
+            let embeds = [];
+            ({ subjects, subjectAry } = getTodo(interaction.user.id));
+            for (let i = 0; i < subjects.length; i++) {
+                let fields = [];
+                for (let j = 0; j < subjectAry[i].length; j++) {
+                    console.log(subjectAry[i][j]);
+                    fields.push({
+                        name: subjectAry[i][j].id.toString(),
+                        value: subjectAry[i][j].name,
+                    });
+                }
+                let newEmbed = new MessageEmbed()
+                    .setTitle(`教科「${subjects[i]}」`)
+                    .addFields(fields);
+                embeds.push(newEmbed);
+            }
+            if (ifdm) {
+                await interaction.reply({
+                    content: 'DMを確認してください。',
+                });
+                //DM送信
+                await client.users.cache
+                    .get(interaction.user.id)
+                    .send({ embeds: embeds });
+                return;
+            }
+            //リプライ送信
             await interaction.reply({
-                content: 'DMを確認してください。',
+                embeds: embeds,
             });
-            await client.users.cache
-                .get(interaction.user.id)
-                .send(
-                    'TODOを追加しました。取得にはコマンドを実行してください。'
-                );
             return;
         } catch (err) {
             console.error(err);

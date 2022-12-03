@@ -1,3 +1,3 @@
 const { createTodo, allTodoCheck, getTodo } = require('./todo.js');
 
-console.log(getTodo('551395071774425088'));
+console.log(JSON.stringify(getTodo('551395071774425088'), null, 4));

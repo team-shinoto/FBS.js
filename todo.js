@@ -2,7 +2,6 @@
 //
 // created by: Aoki Takumi
 const fs = require('fs');
-const { MessageEmbed } = require('discord.js');
 
 const readtodojson = () => {
     //objectを返す。文字列ではない。
@@ -77,6 +76,24 @@ const getTodo = (userID) => {
             return el === el2.id;
         });
     });
+    //todoに含まれる教科を取得。
+    let subjects = [];
+    userTodoObjects.forEach((el) => {
+        if (subjects.includes(el.subject)) {
+            //
+        } else {
+            subjects.push(el.subject);
+        }
+    });
+    //教科ごとに分ける。
+    let subjectAry = [];
+    subjects.forEach((el) => {
+        let subjectTodo = userTodoObjects.filter((el2) => {
+            return el === el2.subject;
+        });
+        subjectAry.push(subjectTodo);
+    });
+    return { subjects: subjects, subjectAry: subjectAry };
 };
 
 const allTodoCheck = () => {
