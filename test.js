@@ -1,4 +1,5 @@
-const {createTodo, allTodoCheck} = require('./todo.js');
+const { allTodoCheck, deleteTodoById } = require('./todo.js');
 
-allTodoCheck();
+deleteTodoById(5);
 
+console.log(allTodoCheck());

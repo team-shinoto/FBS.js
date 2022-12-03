@@ -92,11 +92,12 @@ const create_channel = {
             required: true,
         },
         {
-            type: "STRING",
-            name: "parent",
-            description: "チャンネルを作成するカテゴリを指定します指定しないと最後に作成したカテゴリに作成します",
+            type: 'STRING',
+            name: 'parent',
+            description:
+                'チャンネルを作成するカテゴリを指定します指定しないと最後に作成したカテゴリに作成します',
             required: false,
-        }
+        },
     ],
 };
 
@@ -117,25 +118,73 @@ const todo_create = {
             required: true,
         },
         {
-            type: "STRING",
-            name: "parent",
-            description: "チャンネルを作成するカテゴリを指定します\n指定しないと最後に作成したカテゴリに作成します",
+            type: 'STRING',
+            name: 'parent',
+            description:
+                'チャンネルを作成するカテゴリを指定します\n指定しないと最後に作成したカテゴリに作成します',
             required: false,
-        }
+        },
     ],
 };
-
 
 const todo_check = {
     name: 'todo_check',
     description: 'TODOのチェックをします',
 };
 
-/* const delete_dm = {
+const delete_dm = {
     name: 'delete_dm',
-    description: 'DMを削除します',
-}; */
+    description: 'botとのDMの内容を削除します',
+};
 
+const todo_get = {
+    name: 'todo_get',
+    description: 'TODOを取得します',
+    options: [
+        {
+            type: 'BOOLEAN',
+            name: 'ifdm',
+            description: 'DMでTODOを取得するかどうかを指定します',
+            required: true,
+        },
+    ],
+};
+
+const todo_delete = {
+    name: 'todo_delete',
+    description: 'TODOを削除します',
+    options: [
+        {
+            type: 'INTEGER',
+            name: 'index',
+            description: 'TODOのインデックスを指定します',
+            required: true,
+        },
+    ],
+};
+
+const todo_finish = {
+    name: 'todo_finish',
+    description: 'インデックスで指定されたTODOを完了します。',
+    options: [
+        {
+            type: 'INTEGER',
+            name: 'index',
+            description: '完了するTODOのインデックスを指定します',
+            required: true,
+        },
+        {
+            type: 'BOOLEAN',
+            name: 'delete',
+            description: '完了したTODOを削除するかどうかを指定します',
+        },
+    ],
+};
+
+const exit = {
+    name: 'exit',
+    description: '開発用:botを終了します',
+};
 
 const commands = [
     ping,
@@ -143,7 +192,12 @@ const commands = [
     create_category,
     create_channel,
     todo_create,
-    todo_check
+    todo_check,
+    todo_get,
+    todo_delete,
+    todo_finish,
+    delete_dm,
+    exit,
 ];
 
 const client = new Client({
