@@ -161,9 +161,17 @@ const commands = {
     async delete_dm(interaction) {
         //botとのDMの内容を削除します
         try {
-            let dmChannelID = interaction.user.dmChannel.id;
-            p(dmChannelID);
-            const msg = 'DMを削除しました';
+            //dmチャンネル取得
+            interaction.member.createDM().then((dm) => {
+                //メッセージ取得
+                dm.messages.fetch().then((messages) => {
+                    //メッセージ削除
+                    messages.forEach((message) => {
+                        message.delete();
+                    });
+                });
+            });
+            let msg = 'DMの内容を削除しました';
             await interaction.reply(msg);
         } catch (err) {
             console.error(err);
