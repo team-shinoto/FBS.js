@@ -2,6 +2,7 @@
 //
 // created by: Aoki Takumi
 const fs = require('fs');
+const { MessageEmbed } = require('discord.js');
 
 const readtodojson = () => {
     //objectを返す。文字列ではない。
@@ -11,17 +12,6 @@ const readtodojson = () => {
 const writetodojson = (data) => {
     //objectを受け取り、文字列として書き出す。
     fs.writeFileSync('./todo.json', JSON.stringify(data, null, 4), 'utf8');
-};
-const readdmjson = () => {
-    return JSON.parse(fs.readFileSync('./dmChannels.json', 'utf8'));
-};
-
-const writedmjson = (data) => {
-    fs.writeFileSync(
-        './dmChannels.json',
-        JSON.stringify(data, null, 4),
-        'utf8'
-    );
 };
 
 const createTodo = (client, options) => {
@@ -75,6 +65,20 @@ const createTodo = (client, options) => {
     writetodojson(todos);
 };
 
+const getTodo = (userID) => {
+    let todos = readtodojson();
+    let users = todos.users;
+    let todoList = todos.todo;
+    let user = users.find((el) => {
+        return el.userID === userID;
+    });
+    let userTodoObjects = user.hasTodo.map((el) => {
+        return todoList.find((el2) => {
+            return el === el2.id;
+        });
+    });
+};
+
 const allTodoCheck = () => {
     let msg = 'todoデータベースをチェックします...\n';
     let todos = null;
@@ -115,8 +119,18 @@ const p = (val) => {
     console.log('type: ' + typeof val);
 };
 
+function createTextFromAry(ary) {
+    //create string like a table from array
+    let text = '';
+    ary.forEach((el) => {
+        text = text + el + '\n';
+    });
+    return text;
+}
+
 module.exports = {
     createTodo,
     allTodoCheck,
     p,
+    getTodo,
 };

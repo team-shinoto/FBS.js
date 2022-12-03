@@ -137,6 +137,16 @@ const delete_dm = {
     description: 'botとのDMの内容を削除します',
 };
 
+const todo_get = {
+    name: 'todo_get',
+    description: 'TODOを取得します',
+};
+
+const exit = {
+    name: 'exit',
+    description: '開発用:botを終了します',
+};
+
 const commands = [
     ping,
     hello,
@@ -145,6 +155,8 @@ const commands = [
     todo_create,
     todo_check,
     delete_dm,
+    todo_get,
+    exit,
 ];
 
 const client = new Client({

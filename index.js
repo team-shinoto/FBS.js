@@ -158,6 +158,25 @@ const commands = {
         }
     },
 
+    async todo_get(interaction) {
+        console.log(`${interaction.user.username}がtodo_getを実行`);
+        try {
+            await interaction.reply({
+                content: 'DMを確認してください。',
+            });
+            await client.users.cache
+                .get(interaction.user.id)
+                .send(
+                    'TODOを追加しました。取得にはコマンドを実行してください。'
+                );
+            return;
+        } catch (err) {
+            console.error(err);
+            await interaction.reply('エラーが発生しました');
+            return;
+        }
+    },
+
     async delete_dm(interaction) {
         //botとのDMの内容を削除します
         try {
@@ -178,6 +197,12 @@ const commands = {
             await interaction.reply('エラーが発生しました');
             return;
         }
+    },
+
+    async exit(interaction) {
+        await interaction.reply('終了します');
+        client.destroy();
+        process.exit();
     },
 };
 
