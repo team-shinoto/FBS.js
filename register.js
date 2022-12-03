@@ -150,6 +150,37 @@ const todo_get = {
     ],
 };
 
+const todo_delete = {
+    name: 'todo_delete',
+    description: 'TODOを削除します',
+    options: [
+        {
+            type: 'INTEGER',
+            name: 'index',
+            description: 'TODOのインデックスを指定します',
+            required: true,
+        },
+    ],
+};
+
+const todo_finish = {
+    name: 'todo_finish',
+    description: 'インデックスで指定されたTODOを完了します。',
+    options: [
+        {
+            type: 'INTEGER',
+            name: 'index',
+            description: '完了するTODOのインデックスを指定します',
+            required: true,
+        },
+        {
+            type: 'BOOLEAN',
+            name: 'delete',
+            description: '完了したTODOを削除するかどうかを指定します',
+        },
+    ],
+};
+
 const exit = {
     name: 'exit',
     description: '開発用:botを終了します',
@@ -162,8 +193,10 @@ const commands = [
     create_channel,
     todo_create,
     todo_check,
-    delete_dm,
     todo_get,
+    todo_delete,
+    todo_finish,
+    delete_dm,
     exit,
 ];
 

@@ -6,7 +6,13 @@ const {
     Permissions,
     MessageEmbed,
 } = require('discord.js');
-const { createTodo, allTodoCheck, getTodo } = require('./todo.js');
+const {
+    createTodo,
+    allTodoCheck,
+    getTodo,
+    deleteTodoById,
+    doneTodo,
+} = require('./todo.js');
 require('dotenv').config();
 
 const client = new Client({
@@ -169,11 +175,16 @@ const commands = {
             for (let i = 0; i < subjects.length; i++) {
                 let fields = [];
                 for (let j = 0; j < subjectAry[i].length; j++) {
-                    console.log(subjectAry[i][j]);
                     fields.push({
-                        name: subjectAry[i][j].id.toString(),
-                        value: subjectAry[i][j].name,
+                        name: subjectAry[i][j].name,
+                        value: `インデックス: [${subjectAry[i][
+                            j
+                        ].id.toString()}]\nステータス: ${
+                            subjectAry[i][j].done ? '完了' : '未完了'
+                        }`,
+                        inline: true,
                     });
+                    //fields.push({name: '\u200b',value: '\u200b',inline: true,});
                 }
                 let newEmbed = new MessageEmbed()
                     .setTitle(`教科「${subjects[i]}」`)
@@ -194,6 +205,62 @@ const commands = {
             await interaction.reply({
                 embeds: embeds,
             });
+            return;
+        } catch (err) {
+            console.error(err);
+            await interaction.reply('エラーが発生しました');
+            return;
+        }
+    },
+
+    async todo_delete(interaction) {
+        let id = interaction.options.get('index').value;
+        try {
+            let result = deleteTodoById(id);
+            if (result === false) {
+                await interaction.reply(
+                    '指定されたインデックスのTODOは存在しません'
+                );
+                return;
+            } else {
+                await interaction.reply('TODOを削除しました');
+                return;
+            }
+            return;
+        } catch (err) {
+            console.error(err);
+            await interaction.reply('エラーが発生しました');
+            return;
+        }
+    },
+
+    async todo_finish(interaction) {
+        try {
+            let finishedId = interaction.options.get('index').value;
+            if (
+                interaction.options.get('delete') !== null &&
+                interaction.options.get('delete').value
+            ) {
+                let result = deleteTodoById(finishedId);
+                if (result === false) {
+                    await interaction.reply(
+                        '指定されたインデックスのTODOは存在しません'
+                    );
+                    return;
+                } else {
+                    await interaction.reply('TODOを削除しました');
+                    return;
+                }
+            }
+            //削除せずtodo（indexID）を完了にマークする。
+            let result = doneTodo(finishedId);
+            if (result === false) {
+                await interaction.reply(
+                    '指定されたインデックスのTODOは存在しません'
+                );
+            } else {
+                await interaction.reply('TODOを完了にしました');
+            }
             return;
         } catch (err) {
             console.error(err);

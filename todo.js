@@ -131,6 +131,49 @@ const allTodoCheck = () => {
     return msg;
 };
 
+const doneTodo = (id) => {
+    let ifUpdate = false;
+    let todos = readtodojson();
+    let todoList = todos.todo;
+    for (let i = 0; i < todoList.length; i++) {
+        if (todoList[i].id === id) {
+            todoList[i].done = true;
+            ifUpdate = true;
+            break;
+        }
+    }
+    writetodojson(todos);
+    return ifUpdate;
+};
+
+const deleteTodoById = (id) => {
+    let ifDelete = false;
+    let todos = readtodojson();
+    let todoList = todos.todo;
+    let users = todos.users;
+    //todoListからidが一致するものを削除。
+    for (let i = 0; i < todoList.length; i++) {
+        if (todoList[i].id === id) {
+            todoList.splice(i, 1);
+            ifDelete = true;
+            break;
+        }
+    }
+    //ユーザーのhasTodoからidが一致するものを削除。
+    users.forEach((el) => {
+        for (let i = 0; i < el.hasTodo.length; i++) {
+            if (el.hasTodo[i] === id) {
+                el.hasTodo.splice(i, 1);
+                break;
+            }
+        }
+    });
+    writetodojson(todos);
+    return ifDelete;
+};
+
+const deleteTodoByUser = (userID) => {};
+
 const p = (val) => {
     console.log('value: ' + val);
     console.log('type: ' + typeof val);
@@ -150,4 +193,6 @@ module.exports = {
     allTodoCheck,
     p,
     getTodo,
+    deleteTodoById,
+    doneTodo,
 };
