@@ -36,7 +36,7 @@ const commands = {
         return;
     },
 
-    hello(interaction) {
+    async hello(interaction) {
         const source = {
             en(name) {
                 return `Hello, ${name}!`;
