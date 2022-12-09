@@ -13,8 +13,12 @@ const {
     deleteTodoById,
     doneTodo,
 } = require('./todo.js');
+
+const {
+    createRemind,
+} = require('./remind.js');
+
 require('dotenv').config();
-const cron = require('node-cron');
 
 const client = new Client({
     intents: [Intents.FLAGS.GUILDS],
@@ -131,7 +135,6 @@ const commands = {
             let guild = interaction.guild;
             let name = interaction.options.get('name');
             let time = interaction.options.get('time');
-            console.log(time.value)
             let subjectName = getChannelName(
                 guild,
                 interaction.options.get('subject').value
@@ -145,6 +148,7 @@ const commands = {
                 time: time.value,
             };
             createTodo(client, options);
+            createRemind(client, options);
             const msg = `科目「${subjectName}」のTODO「${name.value}」を作成しました`;
             await interaction.reply(msg);
             return;
@@ -187,7 +191,6 @@ const commands = {
                         リマインド時間:${subjectAry[i][j].time.slice(0, 4)}`,
                         inline: true,
                     });
-                    console.log(subjectAry[i][j].time);
                     //fields.push({name: '\u200b',value: '\u200b',inline: true,});
                 }
                 let newEmbed = new MessageEmbed()
@@ -334,14 +337,15 @@ const commands = {
             const cronMsg = '「' + name.value + '」は終わりましたか？';
 
             var dt = new Date();
+            //cronと名前と何秒ごとかを入れている。
             cronList.push([cron.schedule(value, () => {
                 channel.send(`${dt.getMonth() + 1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`);
             }), name.value, time]);
             /*
             console.log(cronList[1][0]);
             console.log(cronList[1][1]);
-            console.log(cronList[1][2]);
-            */
+            console.log(cronList[1][2]);*/
+            
             return;
         } catch (err) {
             console.error(err);
