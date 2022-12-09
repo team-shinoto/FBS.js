@@ -20,6 +20,7 @@ const client = new Client({
 });
 
 let currentCategory = null;
+let cronList = [[]];
 
 const getChannelName = (guild, id) => {
     return guild.channels.cache.get(id).name;
