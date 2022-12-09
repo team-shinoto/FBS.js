@@ -125,7 +125,7 @@ const todo_create = {
             choices:[
                 {
                     name: "なし",
-                    value: "なし",
+                    value: "-----なし",
                 },
                 {
                     name: "5秒毎",
