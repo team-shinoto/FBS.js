@@ -21,6 +21,7 @@ const client = new Client({
 });
 
 let currentCategory = null;
+let cronList = [[]];
 
 const getChannelName = (guild, id) => {
     return guild.channels.cache.get(id).name;
@@ -129,6 +130,8 @@ const commands = {
         try {
             let guild = interaction.guild;
             let name = interaction.options.get('name');
+            let time = interaction.options.get('time');
+            console.log(time.value)
             let subjectName = getChannelName(
                 guild,
                 interaction.options.get('subject').value
@@ -139,6 +142,7 @@ const commands = {
                 subject: subjectName,
                 userID: user.id,
                 userName: user.username,
+                time: time.value,
             };
             createTodo(client, options);
             const msg = `科目「${subjectName}」のTODO「${name.value}」を作成しました`;
@@ -178,12 +182,12 @@ const commands = {
                 for (let j = 0; j < subjectAry[i].length; j++) {
                     fields.push({
                         name: subjectAry[i][j].name,
-                        value: `インデックス: [${subjectAry[i][
-                            j
-                        ].id.toString()}]\nステータス: ${subjectAry[i][j].done ? '完了' : '未完了'
-                            }`,
+                        value: `インデックス: [${subjectAry[i][j].id.toString()}]\n
+                        ステータス: ${subjectAry[i][j].done ? '完了' : '未完了'}\n
+                        リマインド時間:${subjectAry[i][j].time.slice(0, 4)}`,
                         inline: true,
                     });
+                    console.log(subjectAry[i][j].time);
                     //fields.push({name: '\u200b',value: '\u200b',inline: true,});
                 }
                 let newEmbed = new MessageEmbed()

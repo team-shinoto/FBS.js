@@ -36,6 +36,7 @@ const createTodo = (client, options) => {
         subject: options.subject,
         done: false,
         userID: options.userID,
+        time: options.time,
     };
     todos.todo.push(newTodo);
     //ユーザーのtodoリストに追加
@@ -60,6 +61,7 @@ const createTodo = (client, options) => {
             break;
         }
     }
+    console.log(todos);
     //todo.jsonを更新
     writetodojson(todos);
 };

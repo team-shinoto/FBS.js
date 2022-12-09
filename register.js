@@ -118,6 +118,34 @@ const todo_create = {
             required: true,
         },
         {
+            type: "STRING",
+            name: "time",
+            description: "時間を指定します",
+            required: true,
+            choices:[
+                {
+                    name: "5秒毎",
+                    value: "5秒ごと */5 * * * * *", //valueは先頭5文字までをnameとして使い、それ以降はスライスしてcronに使う
+                },
+                {
+                    name: "毎日0時",
+                    value: "毎日0時 0 0 0 * * *",
+                },
+                {
+                    name: "毎日6時",
+                    value: "毎日6時 0 0 6 * * *",
+                },
+                {
+                    name: "毎日12時",
+                    value: "毎日12時0 0 12 * * *",
+                },
+                {
+                    name: "毎日18時",
+                    value: "毎日18時0 0 18 * * *",
+                },
+            ],
+        },
+        {
             type: 'STRING',
             name: 'parent',
             description:
@@ -191,47 +219,6 @@ const reminder = {
     description: "現在登録中のリマインダーを確認します",
 };
 
-const create_reminder = {
-    name: "create_reminder",
-    description: "リマインドを設定します",
-    options: [
-        {
-            type: "STRING",
-            name: "name",
-            description: "再通知名を指定します",
-            required: true,
-        },
-        {
-            type: "STRING",
-            name: "hour",
-            description: "時間を指定します",
-            required: true,
-            choices: [
-                {
-                    name: "5秒毎",
-                    value: "5秒ごと */5 * * * * *", //valueは先頭5文字までをnameとして使い、それ以降はスライスしてcronに使う
-                },
-                {
-                    name: "毎日0時",
-                    value: "毎日0時 0 0 0 * * *",
-                },
-                {
-                    name: "毎日6時",
-                    value: "毎日6時 0 0 6 * * *",
-                },
-                {
-                    name: "毎日12時",
-                    value: "毎日12時0 0 12 * * *",
-                },
-                {
-                    name: "毎日18時",
-                    value: "毎日18時0 0 18 * * *",
-                },
-            ],
-        },
-    ],
-};
-
 const delete_reminder = {
     name: "delete_reminder",
     description: "リマインドを削除します",
@@ -258,7 +245,6 @@ const commands = [
     delete_dm,
     exit,
     reminder,
-    create_reminder,
     delete_reminder,
 ];
 
