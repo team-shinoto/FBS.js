@@ -236,6 +236,10 @@ const create_reminder = {
             required: true,
             choices: [
                 {
+                    name: "なし",
+                    value: "なし",
+                },
+                {
                     name: "5秒毎",
                     value: "5秒ごと */5 * * * * *", //valueは先頭5文字までをnameとして使い、それ以降はスライスしてcronに使う
                 },

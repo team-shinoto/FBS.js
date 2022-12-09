@@ -16,6 +16,7 @@ const {
 
 const {
     createRemind,
+    deleteRemind,
 } = require('./remind.js');
 
 require('dotenv').config();
@@ -224,6 +225,7 @@ const commands = {
         let id = interaction.options.get('index').value;
         try {
             let result = deleteTodoById(id);
+            deleteRemind(id);
             if (result === false) {
                 await interaction.reply(
                     '指定されたインデックスのTODOは存在しません'

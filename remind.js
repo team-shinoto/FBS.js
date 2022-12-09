@@ -18,17 +18,21 @@ const createRemind = (client, options) => {
         id = todos.todo[todos.todo.length - 1].id;
         task = todos.todo[id].name;
         subject = todos.todo[id].subject;
-        time = todos.todo[id].time.slice(5, todos.todo[id].length - 1);
+        time = todos.todo[id].time.slice(5, todos.todo[id].time.length);
 
         const cronMsg = '「' + subject + 'の' + task + '」は終わりましたか？';
         const user = client.users.cache.get(options.userID)
 
+        console.log(time);
+
         var dt = new Date();
-        cronList.push([cron.schedule(time, () => {
-            user.send(
+        if (time != "なし") {
+            cronList.push([cron.schedule(time, () => {
+                user.send(
                     `${dt.getMonth() + 1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`
-                    );
-        }), id, time]);
+                );
+            }), id, time]);
+        }
         console.log(cronList);
         return;
     } catch (err) {
@@ -38,7 +42,11 @@ const createRemind = (client, options) => {
     }
 };
 
+const deleteRemind = (id) => {
+    
+};
 
 module.exports = {
     createRemind,
+    deleteRemind,
 };
