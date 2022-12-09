@@ -17,6 +17,7 @@ const {
 const {
     createRemind,
     deleteRemind,
+    settingRemind,
 } = require('./remind.js');
 
 require('dotenv').config();
@@ -305,7 +306,7 @@ const commands = {
         client.destroy();
         process.exit();
     },
-
+/*
     async reminder(interaction) {
         try {
             const begin = `現在登録されているリマインダーは以下の通りです`;
@@ -343,11 +344,11 @@ const commands = {
             cronList.push([cron.schedule(value, () => {
                 channel.send(`${dt.getMonth() + 1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`);
             }), name.value, time]);
-            /*
+            
             console.log(cronList[1][0]);
             console.log(cronList[1][1]);
-            console.log(cronList[1][2]);*/
-            
+            console.log(cronList[1][2]);
+
             return;
         } catch (err) {
             console.error(err);
@@ -374,7 +375,7 @@ const commands = {
             interaction.reply("エラーが発生しました");
             return;
         }
-    },
+    },*/
 };
 
 async function onInteraction(interaction) {
@@ -410,4 +411,10 @@ client.on('interactionCreate', (interaction) =>
 client.login(process.env.token).catch((err) => {
     console.error(err);
     process.exit(-1);
+});
+
+//起動時にリマインドを設定する処理
+client.once('ready', () => {
+    settingRemind(client);
+    return;
 });

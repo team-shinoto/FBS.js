@@ -124,6 +124,10 @@ const todo_create = {
             required: true,
             choices:[
                 {
+                    name: "なし",
+                    value: "なし",
+                },
+                {
                     name: "5秒毎",
                     value: "5秒ごと */5 * * * * *", //valueは先頭5文字までをnameとして使い、それ以降はスライスしてcronに使う
                 },
@@ -214,6 +218,7 @@ const exit = {
     description: '開発用:botを終了します',
 };
 
+/*
 const reminder = {
     name: "reminder",
     description: "現在登録中のリマインダーを確認します",
@@ -241,7 +246,7 @@ const create_reminder = {
                 },
                 {
                     name: "5秒毎",
-                    value: "5秒ごと */5 * * * * *", //valueは先頭5文字までをnameとして使い、それ以降はスライスしてcronに使う
+                    value: "5秒ごと 5 * * * * *", //valueは先頭5文字までをnameとして使い、それ以降はスライスしてcronに使う
                 },
                 {
                     name: "毎日0時",
@@ -275,7 +280,7 @@ const delete_reminder = {
             required: true,
         },
     ],
-};
+};*/
 
 const commands = [
     ping,
@@ -289,9 +294,11 @@ const commands = [
     todo_finish,
     delete_dm,
     exit,
+    /*
     reminder,
     create_reminder,
     delete_reminder,
+    */
 ];
 
 const client = new Client({
