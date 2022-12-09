@@ -78,8 +78,6 @@ const settingRemind = async (client) => {
                         let subject = todos.todo[j].subject;
                         let cronMsg = '「' + subject + 'の' + task + '」は終わりましたか？';
 
-                        //user.send("あほ");
-
                         cronList.push([cron.schedule(time, () => {
                             user.send(
                                 `${dt.getMonth() + 1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`
