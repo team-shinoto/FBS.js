@@ -125,7 +125,7 @@ const todo_create = {
             choices:[
                 {
                     name: "なし",
-                    value: "-----なし",
+                    value: "設定なし なし",
                 },
                 {
                     name: "5秒毎",
@@ -218,70 +218,6 @@ const exit = {
     description: '開発用:botを終了します',
 };
 
-/*
-const reminder = {
-    name: "reminder",
-    description: "現在登録中のリマインダーを確認します",
-};
-
-const create_reminder = {
-    name: "create_reminder",
-    description: "リマインドを設定します",
-    options: [
-        {
-            type: "STRING",
-            name: "name",
-            description: "再通知名を指定します",
-            required: true,
-        },
-        {
-            type: "STRING",
-            name: "hour",
-            description: "時間を指定します",
-            required: true,
-            choices: [
-                {
-                    name: "なし",
-                    value: "なし",
-                },
-                {
-                    name: "5秒毎",
-                    value: "5秒ごと 5 * * * * *", //valueは先頭5文字までをnameとして使い、それ以降はスライスしてcronに使う
-                },
-                {
-                    name: "毎日0時",
-                    value: "毎日0時 0 0 0 * * *",
-                },
-                {
-                    name: "毎日6時",
-                    value: "毎日6時 0 0 6 * * *",
-                },
-                {
-                    name: "毎日12時",
-                    value: "毎日12時0 0 12 * * *",
-                },
-                {
-                    name: "毎日18時",
-                    value: "毎日18時0 0 18 * * *",
-                },
-            ],
-        },
-    ],
-};
-
-const delete_reminder = {
-    name: "delete_reminder",
-    description: "リマインドを削除します",
-    options: [
-        {
-            type: "STRING",
-            name: "name",
-            description: "削除したいリマインド名を指定します",
-            required: true,
-        },
-    ],
-};*/
-
 const commands = [
     ping,
     hello,
@@ -294,16 +230,12 @@ const commands = [
     todo_finish,
     delete_dm,
     exit,
-    /*
-    reminder,
-    create_reminder,
-    delete_reminder,
-    */
 ];
 
 const client = new Client({
     intents: 0,
 });
+
 require('dotenv').config();
 client.token = process.env.token;
 async function main() {

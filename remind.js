@@ -22,7 +22,8 @@ const createRemind = (client, options) => {
 
         const cronMsg = '「' + subject + 'の' + task + '」は終わりましたか？';
         const user = client.users.cache.get(options.userID);
-
+        
+        console.log(time)
         var dt = new Date();
         if (time != "なし") {
             cronList.push([cron.schedule(time, () => {
@@ -35,7 +36,6 @@ const createRemind = (client, options) => {
         return;
     } catch (err) {
         console.error(err);
-        interaction.reply("エラーが発生しました");
         return;
     }
 };
@@ -47,14 +47,11 @@ const deleteRemind = (id) => {
                 cronList[i][0].stop();
                 delete cronList[i];
                 cronList = cronList.filter(Boolean); //ここで配列を詰めている
-                /*console.log(cronList);
-                console.log(cronList.length);*/
             }
         }
         return;
     } catch (err) {
         console.error(err);
-        interaction.reply("エラーが発生しました");
         return;
     }
 };
@@ -77,13 +74,15 @@ const settingRemind = async (client) => {
                         let task = todos.todo[j].name;
                         let subject = todos.todo[j].subject;
                         let cronMsg = '「' + subject + 'の' + task + '」は終わりましたか？';
-
-                        cronList.push([cron.schedule(time, () => {
-                            user.send(
-                                `${dt.getMonth() + 1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`
-                            );
-                        }), todos.todo[j].id, time]);
-                        console.log("リマインドを設定しました。")
+                        
+                        if (time != "なし") {
+                            cronList.push([cron.schedule(time, () => {
+                                user.send(
+                                    `${dt.getMonth() + 1}月${dt.getDate()}日${dt.getHours()}時${dt.getMinutes()}分になりました。\n ${cronMsg}`
+                                );
+                            }), todos.todo[j].id, time]);
+                            console.log("リマインドを設定しました。");
+                        }
                     }
                 }
             }
@@ -91,7 +90,6 @@ const settingRemind = async (client) => {
         console.log(cronList);
     } catch (err) {
         console.error(err);
-        interaction.reply("エラーが発生しました");
         return;
     }
 };

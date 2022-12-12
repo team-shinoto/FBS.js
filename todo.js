@@ -61,8 +61,6 @@ const createTodo = (client, options) => {
             break;
         }
     }
-    //console.log(todos);
-    //todo.jsonを更新
     writetodojson(todos);
 };
 
