@@ -6,6 +6,7 @@ const {
     Permissions,
     MessageEmbed,
 } = require('discord.js');
+
 const {
     createTodo,
     allTodoCheck,
@@ -13,6 +14,13 @@ const {
     deleteTodoById,
     doneTodo,
 } = require('./todo.js');
+
+const {
+    createRemind,
+    deleteRemind,
+    settingRemind,
+} = require('./remind.js');
+
 require('dotenv').config();
 
 const client = new Client({
@@ -128,6 +136,7 @@ const commands = {
         try {
             let guild = interaction.guild;
             let name = interaction.options.get('name');
+            let time = interaction.options.get('time');
             let subjectName = getChannelName(
                 guild,
                 interaction.options.get('subject').value
@@ -138,8 +147,10 @@ const commands = {
                 subject: subjectName,
                 userID: user.id,
                 userName: user.username,
+                time: time.value,
             };
             createTodo(client, options);
+            createRemind(client, options);
             const msg = `科目「${subjectName}」のTODO「${name.value}」を作成しました`;
             await interaction.reply(msg);
             return;
@@ -177,11 +188,9 @@ const commands = {
                 for (let j = 0; j < subjectAry[i].length; j++) {
                     fields.push({
                         name: subjectAry[i][j].name,
-                        value: `インデックス: [${subjectAry[i][
-                            j
-                        ].id.toString()}]\nステータス: ${
-                            subjectAry[i][j].done ? '完了' : '未完了'
-                        }`,
+                        value: `インデックス: [${subjectAry[i][j].id.toString()}]\n
+                        ステータス: ${subjectAry[i][j].done ? '完了' : '未完了'}\n
+                        リマインド時間:${subjectAry[i][j].time.slice(0, 4)}`,
                         inline: true,
                     });
                     //fields.push({name: '\u200b',value: '\u200b',inline: true,});
@@ -217,6 +226,7 @@ const commands = {
         let id = interaction.options.get('index').value;
         try {
             let result = deleteTodoById(id);
+            deleteRemind(id);
             if (result === false) {
                 await interaction.reply(
                     '指定されたインデックスのTODOは存在しません'
@@ -331,4 +341,10 @@ client.on('interactionCreate', (interaction) =>
 client.login(process.env.token).catch((err) => {
     console.error(err);
     process.exit(-1);
+});
+
+//起動時にリマインドを設定する処理
+client.once('ready', () => {
+    settingRemind(client);
+    return;
 });

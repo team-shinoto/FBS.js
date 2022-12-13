@@ -118,6 +118,38 @@ const todo_create = {
             required: true,
         },
         {
+            type: "STRING",
+            name: "time",
+            description: "時間を指定します",
+            required: true,
+            choices:[
+                {
+                    name: "なし",
+                    value: "設定なし なし",
+                },
+                {
+                    name: "5秒毎",
+                    value: "5秒ごと */5 * * * * *", //valueは先頭5文字までをnameとして使い、それ以降はスライスしてcronに使う
+                },
+                {
+                    name: "毎日0時",
+                    value: "毎日0時 0 0 0 * * *",
+                },
+                {
+                    name: "毎日6時",
+                    value: "毎日6時 0 0 6 * * *",
+                },
+                {
+                    name: "毎日12時",
+                    value: "毎日12時0 0 12 * * *",
+                },
+                {
+                    name: "毎日18時",
+                    value: "毎日18時0 0 18 * * *",
+                },
+            ],
+        },
+        {
             type: 'STRING',
             name: 'parent',
             description:
@@ -203,6 +235,7 @@ const commands = [
 const client = new Client({
     intents: 0,
 });
+
 require('dotenv').config();
 client.token = process.env.token;
 async function main() {
